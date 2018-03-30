@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/> <!--删除默认的苹果工具栏和菜单栏-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><!--隐藏状态栏-->
+    <meta name="format-detection" content="telephone=no, email=no"/> <!--忽略将识别电话和邮箱-->
+    <link rel="icon" href="../staic/images/favicon.ico">
+    <title>订单详情</title>
+    <script type="text/javascript" src="../staic/ydui/js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="../staic/ydui/css/ydui.css">
+    <link rel="stylesheet" href="../staic/css/reset.css">
+    <link rel="stylesheet" href="../staic/css/home.css">
+    <link rel="stylesheet" href="../staic/css/house.css">
+    <link rel="stylesheet" href="../staic/css/orderDetails.css">
+</head>
+<body>
+<section class="g-flexview">
+    <!--头部-->
+    <header class="m-navbar nomargin">
+        <!--javascript:history.go(-1)-->
+        <a href="./order.html" class="navbar-item">
+            <i class="back-ico"></i>
+        </a>
+        <div class="navbar-center">
+            <span class="navbar-title">详情</span>
+        </div>
+    </header>
+
+    <!--内容-->
+    <div class="g-scrollview">
+        <!-- banner图 -->
+        <div class="home-banner"></div>
+        <!--房源状态-->
+        <div class="banner pt15">
+            <!-- 显示楼盘名称，状态 -->
+            <div class="house-indication">
+                <span class="houseName">金瓯徽府11栋3单元1109室</span>
+                <div class="sold">
+                    <p class="price"><span class="price-icon">￥</span><span class="house-price">139.67</span>万</p>
+                </div>
+                <div class="type-tag">
+                    <span class="tag">A1户型</span>
+                    <span class="tag">三室一厅</span>
+                </div>
+            </div>
+            <!--楼盘信息-->
+            <ul class="houseInfo bdr1">
+                <li><span class="houseTotal">676.7万</span> 总价</li>
+                <li><span class="builtArea">128.21m²</span> 建筑面积</li>
+                <li><span class="estate-manage">10036.3/m²</span>建筑单价</li>
+                <li><span class="households">东南</span>朝向</li>
+                <li><span class="elevator">两梯四户</span>电梯</li>
+                <li><span class="decorateStatus">精装</span>装修情况</li>
+            </ul>
+        </div>
+        <!--订单信息-->
+        <div class="banner">
+            <h2 class="banner-title">订单信息</h2>
+            <div class="rengou-success">
+                <div class="rengou-icon"></div>
+                <span class="successTip">恭喜您，认购成功</span>
+            </div>
+
+            <ul class="order-info">
+                <li>认购时间：<span class="rengouTime">2018-09-12&nbsp;&nbsp;12:20:39</span></li>
+                <li>认购人：<span class="rengouPeople">陈世雨</span></li>
+                <li>身份证号：<span class="id-card">342626199900110011</span></li>
+                <li>认购人手机：<span class="telephone">18305514658</span></li>
+                <li>审核通过时间：<span class="passTime">2018-12-12&nbsp;&nbsp;12:33:21</span></li>
+            </ul>
+
+        </div>
+        <!--弹出框 撤销订单-->
+        <div class="mask">
+            <div class="revoke-dialog hide">
+                <div class="revoke-content">
+                <span class="revoke-tip">
+                    您真的确定撤单吗？
+                </span>
+                    <button class="cancel revoke-cancel">取消</button>
+                    <button class="revoke-sure btn">确定</button>
+                </div>
+                <div class="close revoke-close"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部导航 -->
+    <footer class="bottom">
+        <button type="button" class="revoke">撤单</button>
+    </footer>
+</section>
+<!--底部js-->
+<script type="text/javascript" src="../staic/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../staic/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../staic/ydui/js/ydui.js"></script>
+<script type="text/javascript" src="../staic/js/house.js"></script>
+<script type="text/javascript" src="../staic/js/home.js"></script>
+<script>
+    $(function () {
+        //撤单
+        $(".revoke").click(function () {
+            $(".mask").show();
+            $(".revoke-dialog").show();
+        });
+
+        //确定
+        $(".revoke-sure").click(function () {
+            $(".mask").hide();
+            $(".revoke-dialog").hide();
+        });
+
+        //取消
+        $(".cancel").click(function () {
+            $(".mask").hide();
+            $(".revoke-dialog").hide();
+        });
+
+        //关闭
+        $(".close").click(function () {
+            $(".mask").hide();
+            $(".revoke-dialog").hide();
+        });
+
+        //禁止遮罩层滑动
+        $(function () {
+            $(".mask").on('touchmove',function(e){
+                e.preventDefault();  //阻止默认行为
+            })
+        })
+    })
+</script>
+</body>
+</html>

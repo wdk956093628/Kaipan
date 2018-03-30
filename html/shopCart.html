@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/> <!--删除默认的苹果工具栏和菜单栏-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><!--隐藏状态栏-->
+    <meta name="format-detection" content="telephone=no, email=no"/> <!--忽略将识别电话和邮箱-->
+    <link rel="icon" href="../staic/images/favicon.ico">
+    <title>九邑在线开盘</title>
+    <script type="text/javascript" src="../staic/ydui/js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="../staic/ydui/css/ydui.css">
+    <link rel="stylesheet" href="../staic/css/reset.css">
+    <link rel="stylesheet" href="../staic/css/home.css">
+    <link rel="stylesheet" href="../staic/css/order.css">
+</head>
+<body>
+<section class="g-flexview">
+    <!--头部-->
+    <header class="m-navbar">
+        <div class="navbar-center"><span class="navbar-title">购物车</span></div>
+    </header>
+    <!--内容-->
+    <div class="g-scrollview">
+        <div class="cartTip">
+            <p class="shopTip">您当前最多支持提交一套房源订单</p>
+            <p class="editTip hide">您可以长按房源拖动进行排序</p>
+        </div>
+        <div class="banner pl48">
+            <i class="icon-sort my-handle"></i>
+            <span class="saleStatus sellOut">已售</span>
+            <input type="checkbox" name="house" id="shopChoose">
+            <label for="shopChoose"></label>
+            <p class="shopName">金地格林格林15栋3单元2001室</p>
+            <p class="shopInfo"><span class="shopNum">A4</span>
+                <span class="shopType">三室两厅一卫</span>
+                <span class="shopArea">139.26</span>m²</p>
+            <p class="price"><span class="price-icon">￥</span><span class="house-price">139.67</span>万</p>
+        </div>
+        <div class="banner pl48">
+            <i class="icon-sort my-handle"></i>
+            <span class="saleStatus sellIn">在售</span>
+            <input type="checkbox" name="house2" id="shopChoose2">
+            <label for="shopChoose2"></label>
+            <p class="shopName">金地格林格林15栋3单元2002室</p>
+            <p class="shopInfo"><span class="shopNum">A4</span>
+                <span class="shopType">三室两厅一卫</span>
+                <span class="shopArea">139.26</span>m²</p>
+            <p class="price"><span class="price-icon">￥</span><span class="house-price">139.67</span>万</p>
+        </div>
+        <div class="banner pl48">
+            <i class="icon-sort my-handle"></i>
+            <span class="saleStatus sellIn">在售</span>
+            <input type="checkbox" name="house3" id="shopChoose3">
+            <label for="shopChoose3"></label>
+            <p class="shopName">金地格林格林15栋3单元2003室</p>
+            <p class="shopInfo"><span class="shopNum">A4</span>
+                <span class="shopType">三室两厅一卫</span>
+                <span class="shopArea">139.26</span>m²</p>
+            <p class="price"><span class="price-icon">￥</span><span class="house-price">139.67</span>万</p>
+        </div>
+        <div class="banner pl48">
+            <i class="icon-sort my-handle"></i>
+            <span class="saleStatus sellIn">在售</span>
+            <input type="checkbox" name="house4" id="shopChoose4">
+            <label for="shopChoose4"></label>
+            <p class="shopName">金地格林格林15栋3单元2004室</p>
+            <p class="shopInfo"><span class="shopNum">A4</span>
+                <span class="shopType">三室两厅一卫</span>
+                <span class="shopArea">139.26</span>m²</p>
+            <p class="price"><span class="price-icon">￥</span><span class="house-price">139.67</span>万</p>
+        </div>
+    </div>
+
+    <!--编辑栏-->
+    <div class="bottom">
+        <button class="edit">编辑</button>
+        <button class="but submit">提交订单</button>
+    </div>
+    <div class="bottom editbar hide">
+        <button class="complete">完成</button>
+        <button class="but del">删除</button>
+    </div>
+
+    <!--弹出框-->
+    <div class="del-dialog hide">
+        <span class="del-shopName">荷花苑15栋3单元2002室</span>
+        <div class="del-content">
+            <div class="del-confirm">
+                <p>您真的确定删除吗？</p>
+            </div>
+            <button class="cancel del-cancel">取消</button>
+            <button class="but del-sure">确认</button>
+        </div>
+        <div class="close del-close"></div>
+    </div>
+    <div class="mask hide"></div>
+
+    <!--导航菜单-->
+    <footer class="m-tabbar mt5">
+        <a href="./index.html" class="tabbar-item">
+            <span class="tabbar-icon">
+                <i class="icon i-home"></i>
+            </span>
+            <span class="tabbar-txt">首页</span>
+        </a>
+        <a href="./shopCart.html" class="tabbar-item tabbar-active">
+            <span class="tabbar-icon">
+                <i class="icon i-shopcart"></i>
+            </span>
+            <span class="tabbar-txt">购物车</span>
+        </a>
+        <div class="snapping-house">
+            <a href="house.html">抢房</a>
+        </div>
+        <a href="./order.html" class="tabbar-item">
+            <span class="tabbar-icon">
+                <i class="icon i-order"></i>
+            </span>
+            <span class="tabbar-txt">订单</span>
+        </a>
+        <a href="./mine.html" class="tabbar-item">
+            <span class="tabbar-icon">
+                <i class="icon i-mine"></i>
+            </span>
+            <span class="tabbar-txt">我</span>
+        </a>
+    </footer>
+</section>
+<!--尾部js-->
+<script type="text/javascript" src="../staic/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../staic/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../staic/ydui/js/ydui.js"></script>
+<script type="text/javascript" src="../staic/js/home.js"></script>
+<script type="text/javascript" src="../staic/Sortable/Sortable.min.js"></script>
+<script type="text/javascript">
+
+    //阻止长按菜单
+    document.oncontextmenu = function (e) {
+        e.preventDefault();
+    };
+
+    // 按下排序禁止页面滑动事件
+    $(".banner").on("touchmove",function(e) {
+        if(e.target.className.indexOf("g-scrollview") >= 0) {
+            e.preventDefault();
+        }
+    });
+
+    // 拖动排序
+    function sortable() {
+        var el = document.getElementById("sortable");
+        var sortable = Sortable.create(el, {
+            animation: 300,
+            draggable: ".banner",
+            chosenClass: "sortable-drag",
+            // handle: '.my-handle'
+        });
+    }
+
+</script>
+</body>
+<script>
+    $(function () {
+        //编辑按钮
+        $(".edit").click(function () {
+            $(".bottom").hide();
+            $(".editbar").show();
+            $(".shopTip").hide();
+            $(".editTip").show();
+
+            // 排序
+            $(".saleStatus").hide();
+            $(".icon-sort").show();
+            $(".g-scrollview").attr("id", "sortable");
+            sortable();
+        });
+
+        //完成按钮
+        $(".complete").click(function () {
+            $(".bottom").show();
+            $(".editbar").hide();
+            $(".shopTip").show();
+            $(".editTip").hide();
+
+            // 关闭排序
+            $(".saleStatus").show();
+            $(".icon-sort").hide();
+            $(".g-scrollview").removeAttr("id");
+        });
+
+        //删除按钮
+        $(".del").click(function () {
+            $(".del-dialog").removeClass("hide");
+            $(".mask").show();
+        });
+
+        //确认删除
+        $(".del-sure").click(function () {
+            $(".mask").hide();
+            $(".del-dialog").addClass("hide");
+        });
+        //取消删除
+        $(".del-cancel").click(function () {
+            $(".mask").hide();
+            $(".del-dialog").addClass("hide");
+        });
+        // 关闭弹框
+        $(".del-close").click(function () {
+            $(".mask").hide();
+            $(".del-dialog").addClass("hide");
+        });
+
+    })
+</script>
+</html>
