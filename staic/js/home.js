@@ -1,5 +1,4 @@
 var projectId = 1;
-var groupId = 1;
 var customerId;
 var startIndex = -1;
 var pageCount = -1;
@@ -7,8 +6,7 @@ var pageCount = -1;
 
 $(function () {
     CheckToken();
-    // autoSort();
-    Project_query();
+    autoSort();
     ProjectInfo_query();
     Model_query();
 
@@ -57,35 +55,13 @@ function autoSort() {
             if (data >= 1) {
                 $(".lineIndex").html(data);
                 if ($(".lineIndex").html() == "") {
-                    dialog();
+                    $(".mask").show();
+                    $(".rockNumTip").show();
                     $(".rockNum-result").html(data)
                 }
             }
         }
     });
-}
-
-//弹出框
-function dialog() {
-    $(".mask").show();
-    $(".rockNumTip").show();
-}
-
-
-function Project_query() {
-    $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Project_query",
-        type: "post",
-        dataType: 'jsonp',
-        jsonp: "callback",
-        data: {
-            groupId: groupId,
-            projectId: projectId
-        },
-        success: function (data) {
-            console.log(data)
-        }
-    })
 }
 
 
@@ -100,7 +76,7 @@ function ProjectInfo_query() {
             projectId: projectId
         },
         success: function (data) {
-            // console.log(data);
+            console.log(data);
             var data = JSON.parse(data.replace(/\[|]/g, ''));
             var timer = data.openTime.split(" ");
             var year = timer[0].split("/");
@@ -121,8 +97,8 @@ function ProjectInfo_query() {
             $(".build-address").html(data.projectAddress);
             $(".developer").html(data.developer);
             $(".manager").html(data.manager);
-            $(".households").html(data.totalCount);
-            $(".land-area").html(data.totalArea);
+            $(".households").html(data.totalCount+'户');
+            $(".land-area").html(data.totalArea+'㎡');
             // 联系方式
             $(".dynatown").html(data.phone);
             $(".telbut").attr("href", "tel:" + data.phone);
@@ -130,6 +106,7 @@ function ProjectInfo_query() {
     });
 }
 
+// 户型信息
 function Model_query() {
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Model_query",
@@ -144,7 +121,7 @@ function Model_query() {
         },
         success: function (data) {
             data = JSON.parse(data);
-            console.log(data);
+            // console.log(data);
             var list = "";
             $.each(data, function (i, o) {
                 list += '<div class="ht-item swiper-slide">';
@@ -152,8 +129,8 @@ function Model_query() {
                 list += '<span class="typeCode">' + o.modelName + '</span>';
                 list += '<img class="ht-img" src=' + o.pictures + ' alt=户型图>';
                 list += '</div>';
-                list += '<p class="huxing-info"><span class="houseType">' + o.modelType + '</span> /<span class="houseArea">120</span> m²</p>';
-                list += '<p>共<span class="houseAmount">99套</span></p>';
+                list += '<p class="huxing-info"><span class="houseType">' + o.modelType + '</span>';
+                list += '<p><span class="houseAmount">'+o.count+'套</span></p>';
                 list += '</div>';
             });
             $(".ht-content").html(list);

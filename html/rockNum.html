@@ -15,9 +15,11 @@
     <link rel="stylesheet" href="../staic/css/home.css">
     <link href="https://cdn.bootcss.com/Swiper/4.2.0/css/swiper.min.css" rel="stylesheet">
     <style>
+        /*户型图分页器*/
         .swiper-pagination-bullet {
-            width: 5px;
-            height: 3px;
+            width: 8px;
+            height: 4px;
+            border-radius: 0;
             background-color: rgba(212, 213, 213, 0.6);
         }
 
@@ -42,6 +44,7 @@
     <div class="g-scrollview">
         <!-- banner图 -->
         <div class="home-banner">
+            <img src="../staic/images/index_banner.jpg" alt="">
             <div class="kaipan-time">
                 <p class="time-item">开盘时间</p>
                 <p class="time-item"><b class="year"></b>年<b class="month"></b>月<b class="day"></b>日</p>
@@ -58,9 +61,9 @@
                     <!--<span class="loupanStatus">即将开盘</span>-->
                 </div>
                 <div class="type-tag">
-                    <span class="tag">两室一厅</span>
-                    <span class="tag">三室一厅</span>
-                    <span class="tag">四室一厅</span>
+                    <!--<span class="tag">两室一厅</span>-->
+                    <!--<span class="tag">三室一厅</span>-->
+                    <!--<span class="tag">四室一厅</span>-->
                 </div>
             </div>
             <div class="house-adress">
@@ -83,54 +86,7 @@
         <div class="banner">
             <h2 class="banner-title">户型信息</h2>
             <div class="ht-container swiper-container">
-                <div class="ht-content swiper-wrapper">
-                    <div class="ht-item swiper-slide">
-                        <div class="floor-plans">
-                            <span class="typeCode">B2</span>
-                            <img class="ht-img" src="../staic/images/house-a1.png" alt="a1">
-                        </div>
-                        <p class="huxing-info"><span class="houseType">3室2厅1卫</span> / <span
-                                class="houseArea">120</span> m²</p>
-                        <p>共<span class="houseAmount">99套</span></p>
-                    </div>
-                    <div class="ht-item swiper-slide">
-                        <div class="floor-plans">
-                            <span class="typeCode">B2</span>
-                            <img class="ht-img" src="../staic/images/house-a1.png" alt="a1">
-                        </div>
-                        <p class="huxing-info"><span class="houseType">3室2厅1卫</span> / <span
-                                class="houseArea">120</span> m²</p>
-                        <p>共<span class="houseAmount">99套</span></p>
-                    </div>
-                    <div class="ht-item swiper-slide">
-                        <div class="floor-plans">
-                            <span class="typeCode">B2</span>
-                            <img class="ht-img" src="../staic/images/house-a1.png" alt="a1">
-                        </div>
-                        <p class="huxing-info"><span class="houseType">3室2厅1卫</span> / <span
-                                class="houseArea">120</span> m²</p>
-                        <p>共<span class="houseAmount">99套</span></p>
-                    </div>
-                    <div class="ht-item swiper-slide">
-                        <div class="floor-plans">
-                            <span class="typeCode">B2</span>
-                            <img class="ht-img" src="../staic/images/house-a1.png" alt="a1">
-                        </div>
-                        <p class="huxing-info"><span class="houseType">3室2厅1卫</span> / <span
-                                class="houseArea">120</span> m²</p>
-                        <p>共<span class="houseAmount">99套</span></p>
-                    </div>
-                    <div class="ht-item swiper-slide">
-                        <div class="floor-plans">
-                            <span class="typeCode">B2</span>
-                            <img class="ht-img" src="../staic/images/house-a1.png" alt="a1">
-                        </div>
-                        <p class="huxing-info"><span class="houseType">3室2厅1卫</span> / <span
-                                class="houseArea">120</span> m²</p>
-                        <p>共<span class="houseAmount">99套</span></p>
-                    </div>
-
-                </div>
+                <div class="ht-content swiper-wrapper"></div>
                 <div class="swiper-pagination"></div>
             </div>
         </div>
@@ -199,7 +155,7 @@
 
     // swiper配置
     var mySwiper = new Swiper('.swiper-container', {
-        slidesPerView: 2.4,
+        slidesPerView: 2.5,
         pagination: {
             el: '.swiper-pagination'
         },
