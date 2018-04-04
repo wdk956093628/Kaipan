@@ -1,11 +1,11 @@
 var projectId = 1;
-var productId = 1;
+var productId = -1;
 var startIndex = -1;
 var pageCount = -1;
 
 $(function () {
     CheckToken();
-    // Customer_queryOrdered();
+    Customer_queryOrdered();
 
     $(".order-item").click(function () {
         window.location.href = "orderDetails.html"

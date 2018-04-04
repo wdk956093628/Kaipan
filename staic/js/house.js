@@ -3,7 +3,7 @@ var buildingNo = 1;
 var unit = 1;
 var floorIndex = -1;
 var modelId = -1;
-var productId = 9;
+var productId = 1;
 var pickUserId = -1;
 var customerId = 504;
 var userId = -1;
@@ -17,14 +17,23 @@ $(function () {
     // 获取房源信息
     Product_queryArray();
 
+    //点击房源
+    $(".view-container").on('touchstart', 'li', function () {
+        $(".mask").show();
+        $(".house-dialog").removeClass("hide");
+
+    });
+
     // 添加购物车
     $(".addCart").on('touchstart', function () {
         Cart_add();
     });
 
+    //立即购买
     $(".buyHouse").on('touchstart', function () {
         Deal();
-    })
+    });
+
     // 选择楼栋和单元
     $(".loudong").on('click', 'li', function () {
         $(this).addClass("active").siblings().removeClass("active");
@@ -33,53 +42,27 @@ $(function () {
         Product_queryArray();
     });
 
+
     $(".unit").on('click', 'li', function () {
         $(this).addClass("active").siblings().removeClass("active");
         unit = $(this).val();
         Product_queryArray();
     });
-
-
-    // 生成展示房源
-    var con = $(".view-container");
-    var item = $(".house-item");
-    for (var i = 0; i < 71; i++) {
-        var list = item.clone(true);
-        con.append(list)
-    }
-
-    //点击房源出现弹框
-    $(".house-item").click(function () {
-        $(".mask").show();
-        $(".house-dialog").removeClass("hide");
+    //好的按钮
+    $(".house-cancel").on('touchstart', function () {
+        $(".mask").hide();
+        $(".houseToCart").addClass("hide");
+        $(".houseToOrder").addClass("hide");
+    });
+    //关闭图标
+    $(".close").on('touchstart', function () {
+        $(".mask").hide();
+        $(".house-dialog").addClass("hide");
+        $(".houseDetail-dialog").addClass("hide");
     });
     //查看详情
     $(".check-details").click(function () {
         window.location.href = 'houseDetails.html';
-    });
-    //添加到购物车
-    $(".addCart").click(function () {
-        // $(".house-dialog").addClass("hide");
-        // $(".houseToCart").removeClass("hide");
-        // $(".mask").show();
-    });
-    //好的
-    $(".house-cancel").click(function () {
-        $(".houseToCart").addClass("hide");
-        $(".houseToOrder").addClass("hide");
-        $(".mask").hide();
-    });
-    //关闭图标
-    $(".close").click(function () {
-        $(".house-dialog").addClass("hide");
-        $(".houseDetail-dialog").addClass("hide");
-        $(".mask").hide();
-    });
-    //立即抢房
-    $(".buyHouse").click(function () {
-        // $(".house-dialog").addClass("hide");
-        // $(".mask").show();
-        // $(".houseToOrder").removeClass("hide");
     });
     //刷新
     $(".refresh").on('touchstart', function () {
@@ -104,8 +87,7 @@ function Product_getBuildings() {
             projectId: projectId
         },
         success: function (data) {
-            data = JSON.parse(data);
-            console.log(data);
+            data = JSON.parse(data).reverse();
             var bd = "";
             $.each(data, function (i, loudong) {
                 bd += '<li value=' + loudong.buildingNo + '>' + loudong.buildingNo + '栋</li>'
@@ -118,7 +100,7 @@ function Product_getBuildings() {
 
 //单元查询
 function Product_getUnits() {
-    console.log("buildingNo" + buildingNo)
+
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Product_getUnits",
         // async: false,
@@ -130,8 +112,7 @@ function Product_getUnits() {
             buildingNo: buildingNo
         },
         success: function (data) {
-            data = JSON.parse(data);
-            // console.log(data);
+            data = JSON.parse(data).reverse();
             var un = "";
             $.each(data, function (i, units) {
                 un += '<li value=' + units.unit + '>' + units.unit + '单元</li>'
@@ -144,15 +125,15 @@ function Product_getUnits() {
 
 //房源查询
 function Product_queryArray() {
-    console.log("buildingNo" + buildingNo);
-    console.log("unit" + unit);
+    console.log("buildingNo:" + buildingNo);
+    console.log("unit:" + unit);
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Product_query",
         type: "post",
-        // async: false,
         dataType: 'jsonp',
         jsonp: "callback",
         data: {
+            productId: -1,
             projectId: projectId,
             buildingNo: buildingNo,
             unit: unit,
@@ -160,17 +141,39 @@ function Product_queryArray() {
             modelId: modelId
         },
         success: function (data) {
+            var side = "";
+            var count = "";
+            var h = "";
             data = JSON.parse(data);
             console.log(data);
-            var count = "",
-                side = "";
+            $(".loudongTip").html(buildingNo + '栋' + ' - ' + unit + '单元');
+
             $.each(data, function (i, o) {
+                h += '<li class="house-item"><span class="houseNum">' + o.productName + '</span></li>';
+                $(".view-container").html(h);
+                if(o.productStatus == 0){
+                    $(".house-item").addClass("keshou");
+                }else if(o.productStatus == 1){
+                    $(".house-item").addClass("yixuan");
+                }else if(o.productStatus == 2){
+                    $(".house-item").addClass("yishou");
+                }
                 count = Math.max(o.floorCount);
-                side += "<li><span>" + (i + 1) + "</span>F</li>"
             });
+
+            //侧边栏
+            for (var k = 0; k < count; k++) {
+                side += "<li><span>" + (k + 1) + "</span>F</li>";
+            }
             $(".sidebar").html(side)
         }
     })
+}
+
+function searchArr(arr,key,value){
+    var arr1 = [];
+    arr1 += arr.filter(item=>item[key]==value);
+    console.log(arr1)
 }
 
 //添加购物车
@@ -188,10 +191,12 @@ function Cart_add() {
         },
         success: function (data) {
             console.log(data);
-            if(data>0){
+            if (data > 0) {
+                $(".mask").show();
                 $(".house-dialog").addClass("hide");
                 $(".houseToCart").removeClass("hide");
-                $(".mask").show();
+            } else {
+                YDUI.dialog.toast('加入购物车失败', 'error', '1000');
             }
         }
     })
@@ -199,23 +204,26 @@ function Cart_add() {
 
 //购买房源
 function Deal() {
+
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Deal",
+        url: "http://123.206.206.90:2511/AjaxService.svc/DealBatch",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
         data: {
             projectId: projectId,
             customerId: customerId,
-            productId: 2,
-            userId: 1
+            productId: productId,
+            userId: userId
         },
         success: function (data) {
             console.log(data);
-            if(data>0){
+            if (data > 0) {
                 $(".house-dialog").addClass("hide");
                 $(".mask").show();
                 $(".houseToOrder").removeClass("hide");
+            } else {
+                YDUI.dialog.toast('抢房失败请重试', 'error', '1000');
             }
         }
     })

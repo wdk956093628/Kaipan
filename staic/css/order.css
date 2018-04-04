@@ -4,11 +4,14 @@
 
 
 /*购物车提示*/
-.shopTip, .editTip {
+.shopTip,
+.editTip,
+.noCartTip{
     margin-bottom: 10px;
-    margin-left: 15px;
+    /*margin-left: 15px;*/
     width: 100%;
     height: 20px;
+    text-align: center;
     font-size: 0.24rem;
     color: #f24a61;
 }
@@ -152,6 +155,7 @@ input[type=checkbox]:checked + label:after {
     right: 0;
     width: 5.15rem;
     height: 6.23rem;
+    text-align: center;
     background: url("../images/del-dialog.png");
     background-size: cover;
     border-radius: 6px;
@@ -175,14 +179,13 @@ input[type=checkbox]:checked + label:after {
     margin: auto;
     display: block;
     width: 2.9rem;
-    font-size: 0.26rem;
+    font-size: 0.3rem;
     color: #ffffff;
 }
 
 .del-confirm {
     margin: auto;
     padding-top: 0.8rem;
-    width: 3rem;
     font-size: 0.3rem;
     color: #333333;
 }
@@ -191,9 +194,9 @@ input[type=checkbox]:checked + label:after {
 .cancel, .del-sure {
     margin-top: 0.6rem;
     float: right;
-    margin-right: 0.6rem;
-    width: 1.6rem;
-    height: 0.7rem;
+    margin-right: 0.7rem;
+    width: 1.45rem;
+    height: 0.64rem;
     font-size: 0.29rem;
     border-radius: 32px;
 }
@@ -201,7 +204,7 @@ input[type=checkbox]:checked + label:after {
 /*取消删除*/
 .cancel {
     float: left;
-    margin-left: 0.6rem;
+    margin-left: 0.7rem;
     border: solid 1px #cccccc;
 }
 

@@ -143,28 +143,29 @@ function CheckShortCode() {
         success: function (data) {
             console.log(data);
             $.cookie("token", data, {expires: 1, path: '/'});
-            window.location.href = "./rules.html";
+            // window.location.href = "./rules.html";
+            CheckToken()
         }
     })
 }
 
-// function CheckToken(data) {
-//     var token = data;
-//     $.ajax({
-//         url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
-//         type: "post",
-//         dataType: 'jsonp',
-//         jsonp: "callback",
-//         data: {
-//             token: token
-//         },
-//         success: function (data) {
-//             if (data >= 0) {
-//                 console.log(data)
-//                setTimeout(function () {
-//                    window.location.href = "./rules.html";
-//                },1000)
-//             }
-//         }
-//     })
-// }
+function CheckToken() {
+    var token = $.cookie('token');
+    $.ajax({
+        url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
+        type: "post",
+        dataType: 'jsonp',
+        jsonp: "callback",
+        data: {
+            token: token
+        },
+        success: function (data) {
+            if (data >= 0) {
+                console.log(data);
+               setTimeout(function () {
+                   window.location.href = "../html/rules.html";
+               },1000)
+            }
+        }
+    })
+}
