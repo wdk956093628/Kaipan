@@ -160,14 +160,13 @@
     height: .3rem;
     text-align: center;
     font-size: .24rem;
-
 }
 
 /*可售*/
 .keshou {
     color: #caccd3;;
     background: url("../images/keshou.png");
-    background-size: contain;
+    background-size: cover;
     border: none;
     border-radius: 0;
 }

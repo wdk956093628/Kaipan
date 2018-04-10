@@ -52,7 +52,6 @@ $(function () {
         $(".mask").hide();
         $(".revoke-dialog").hide();
     });
-
 });
 
 function CheckToken() {
@@ -87,12 +86,12 @@ function Deal_query() {
         success: function (data) {
             data = JSON.parse(data);
             console.log(data);
-            if (data.length > 1) {
+            if (data.length >= 1) {
                 var list = "";
                 $.each(data, function (i, o) {
                     list += '<div class="banner pt15 order-item">';
                     list += '<p class="shopName">' + o.projectName + o.buildingNo + "栋" + o.unit + "单元" + o.productName + "室" + '</p>';
-                    list += '<p class="shopInfo"><span class="shopNum">' + o.modelName + o.modelId + '</span>';
+                    list += '<p class="shopInfo"><span class="shopNum">' + o.modelName + '</span>';
                     list += '<span class="shopType">' + o.modelType + '</span>';
                     list += '<span class="shopArea">' + o.area + '</span>m²</p>';
                     list += '<p class="price"><span class="price-icon">￥</span><span class="house-price">' + (o.totalMoney / 10000).toFixed(2) + '</span>万</p>';
@@ -148,7 +147,7 @@ function orderDetails() {
             console.log(data)
             $.each(data, function (i, o) {
                 $(".houseName").html(o.projectName + o.buildingNo + '栋' + o.unit + '单元' + o.productName + '室');
-                $(".orderDetails-tag").html(o.modelName + o.modelId  + '户型');
+                $(".orderDetails-tag").html(o.modelName + '户型');
                 $(".orderDetails-type").html(o.modelType);
                 $(".house-price").html((o.totalMoney / 10000).toFixed(2));
                 $(".floorIndex").html(o.floorIndex + '层');

@@ -23,6 +23,8 @@ $(function () {
     $(".loudong").on('click', 'li', function () {
         $(this).addClass("active").siblings().removeClass("active");
         buildingNo = $(this).val();
+        unit = 1;
+        Product_getUnits();
         Product_queryArray();
     });
 
@@ -149,8 +151,6 @@ function Product_getUnits() {
 
 //房源列表
 function Product_queryArray() {
-    // console.log("buildingNo:" + buildingNo);
-    // console.log("unit:" + unit);
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Product_queryArray",
         type: "get",
@@ -169,33 +169,53 @@ function Product_queryArray() {
             var content = "";
             var count = "";
             var item = "";
+            var floorArr = [];
             data = JSON.parse(data);
             console.log(data);
             $(".loudongTip").html(buildingNo + '栋' + ' - ' + unit + '单元');
             $.each(data, function (i, o) {
                 count = Math.max(o.floorCount);
+                floorArr.push(o.floorIndex);
+                if(o.floorIndex == ){
+
+                }
             });
             //侧边栏
             for (var k = 0; k < count; k++) {
                 side += "<li><span>" + (k + 1) + "</span>F</li>";
-                content +="<li style='width:100%;height: 1rem'></li>"
+                content += "<li style='width:100%;height: 1rem'></li>"
             }
             $(".sidebar").html(side);
             $(".view-container").html(content);
 
-            $.each(data,function (i,o) {
-                if (o.productStatus == 0) {
-                    item += '<li class="house-item yixuan" value="' + o.productId + '"><span class="houseNum">' + o.productName + '</span></li>';
-                } else if (o.productStatus == 1) {
-                    item += '<li class="house-item yishou" value="' + o.productId + '"><span class="houseNum">' + o.productName + '</span></li>';
-                } else if (o.productStatus == 2) {
-                    item += '<li class="house-item keshou" value="' + o.productId + '"><span class="houseNum">' + o.productName + '</span></li>';
+            //楼层
+            var newArr = [];
+            for (var i = 0; i < floorArr.length; i++) {
+                if (newArr.indexOf(floorArr[i]) === -1) {
+                    newArr.push(floorArr[i])
                 }
-                if(o.floorIndex == 1){
+            }
+            newArr.forEach(function (floor_val) {
+                console.log(floor_val)
+            });
 
+
+            $.each(data, function (i, o) {
+                // if (o.productStatus == 0) {
+                //     item += '<li class="house-item yixuan" value="' + o.productId + '"><span class="houseNum">' + o.productName + '</span></li>';
+                // } else if (o.productStatus == 1) {
+                //     item += '<li class="house-item yishou" value="' + o.productId + '"><span class="houseNum">' + o.productName + '</span></li>';
+                // } else if (o.productStatus == 2) {
+                //     item += '<li class="house-item keshou" value="' + o.productId + '"><span class="houseNum">' + o.productName + '</span></li>';
+                // }
+
+                for (var j = 0; j < newArr.length; j++) {
+                    if (o.floorIndex == newArr[j]) {
+                        // console.log(this)
+                    }
                 }
                 $(".view-container").html(item);
-            })
+            });
         }
     })
 }
@@ -221,7 +241,7 @@ function ProductDetails() {
             console.log(data);
             $.each(data, function (i, o) {
                 $(".houseName").html(o.projectName + o.buildingNo + '栋' + o.unit + '单元' + o.productName + '室');
-                $(".typeNum").html(o.modelName + o.modelId);
+                $(".typeNum").html(o.modelName);
                 $(".houseType").html(o.modelType);
                 $(".houseArea").html(o.area + '㎡');
                 $(".unitPrice").html('￥' + (o.unitPrice / 10000).toFixed(2) + '/m²');
@@ -234,7 +254,7 @@ function ProductDetails() {
 
 //添加购物车
 function Cart_add() {
-    console.log(customerId)
+    // console.log(customerId)
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Cart_add",
         type: "get",
@@ -247,7 +267,7 @@ function Cart_add() {
             pickUserId: pickUserId
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             $(".mask").show();
             $(".house-dialog").addClass("hide");
             $(".houseToCart").removeClass("hide");
@@ -302,26 +322,26 @@ function Product_queryCartCount() {
         dataType: 'jsonp',
         jsonp: "callback",
         data: {
-            productId:productId
+            productId: productId
         },
         success: function (data) {
             data = JSON.parse(data);
             console.log(data);
             $.each(data, function (i, o) {
                 $(".houseName").html(o.projectName + o.buildingNo + '栋' + o.unit + '单元' + o.productName + '室');
-                $(".house-modelName").html(o.modelName + o.modelId + '户型');
+                $(".house-modelName").html(o.modelName + '户型');
                 $(".house-modelType").html(o.modelType);
                 $(".addCartCount").html(o.cartProductCount);
-                $(".houseTotal").html((o.totalMoney / 10000).toFixed(2));
+                $(".houseTotal").html((o.totalMoney / 10000).toFixed(2) + '㎡');
                 $(".builtArea").html((o.area / 1).toFixed(2) + '㎡');
                 $(".builtUnitPrice").html((o.unitPrice / 10000).toFixed(2) + '/m²');
                 $(".orientation").html(o.orientation);
-                $(".floorIndex").html(o.floorIndex+'层');
-                if(o.decorateMode == 0){
+                $(".floorIndex").html(o.floorIndex + '层');
+                if (o.decorateMode == 0) {
                     $(".decorateMode").html("毛胚");
-                }else if(o.decorateMode == 1){
+                } else if (o.decorateMode == 1) {
                     $(".decorateMode").html("简装");
-                }else if(o.decorateMode == 2){
+                } else if (o.decorateMode == 2) {
                     $(".decorateMode").html("精装");
                 }
                 //户型介绍

@@ -40,7 +40,7 @@ function CheckToken() {
 
 //进入首页，自动摇号
 function autoSort() {
-    console.log(customerId);
+    // console.log(customerId);
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/AutoSort",
         type: "get",
@@ -64,7 +64,6 @@ function autoSort() {
     });
 }
 
-
 //首页楼盘信息展示
 function ProjectInfo_query() {
     $.ajax({
@@ -76,29 +75,28 @@ function ProjectInfo_query() {
             projectId: projectId
         },
         success: function (data) {
-            console.log(data);
-            var data = JSON.parse(data.replace(/\[|]/g, ''));
+            data = JSON.parse(data)[0];
             var timer = data.openTime.split(" ");
             var year = timer[0].split("/");
             var hour = timer[1].split(":");
             $(".rockNum-title").html(data.projectName);
             $(".loupanName").html(data.projectName);
             $(".loupan-adress").html(data.projectAddress);
-            //开盘时间
+            // 开盘时间
             $(".year").html(year[0]);
             $(".month").html(year[1]);
             $(".day").html(year[2]);
             $(".hour").html(hour[0]);
             $(".minute").html(hour[1]);
             $(".second").html(hour[2]);
-            //开盘规则
+            // 开盘规则
             $(".kaipan-rules").html(data.openRule);
             // 楼盘信息
             $(".build-address").html(data.projectAddress);
             $(".developer").html(data.developer);
             $(".manager").html(data.manager);
-            $(".households").html(data.totalCount+'户');
-            $(".land-area").html(data.totalArea+'㎡');
+            $(".households").html(data.totalCount + '户');
+            $(".land-area").html(data.totalArea + '㎡');
             // 联系方式
             $(".dynatown").html(data.phone);
             $(".telbut").attr("href", "tel:" + data.phone);
@@ -127,13 +125,34 @@ function Model_query() {
                 list += '<div class="ht-item swiper-slide">';
                 list += '<div class="floor-plans">';
                 list += '<span class="typeCode">' + o.modelName + '</span>';
-                list += '<img class="ht-img" src=' + o.pictures + ' alt=户型图>';
+                list += '<img class="ht-img" src="" alt="户型图">';
                 list += '</div>';
                 list += '<p class="huxing-info"><span class="houseType">' + o.modelType + '</span>';
-                list += '<p><span class="houseAmount">'+o.count+'套</span></p>';
+                list += '<p><span class="houseAmount">' + o.count + '套</span></p>';
                 list += '</div>';
+                getPhotos(o.pictures);
             });
             $(".ht-content").html(list);
         }
     });
+}
+
+// 户型图片
+function getPhotos(photoId) {
+    var photoId = photoId;
+    $.ajax({
+        url: 'http://192.168.98.24:8080/picture/getPhotos',
+        type: 'post',
+        crossDomain: true,
+        data: {
+            photoId: photoId,
+            photoType: 2,
+            userName: 1,
+            userKey: 1
+        },
+        success: function (data) {
+            var dataUrl = data.data.data[0].photoUrl;
+            $(".ht-img").attr("src", dataUrl)
+        }
+    })
 }

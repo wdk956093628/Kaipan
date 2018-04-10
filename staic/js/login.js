@@ -142,8 +142,7 @@ function CheckShortCode() {
         success: function (data) {
             console.log(data);
             $.cookie("token", data, {expires: 1, path: '/'});
-            // window.location.href = "./rules.html";
-            CheckToken()
+            // CheckToken()
         }
     })
 }

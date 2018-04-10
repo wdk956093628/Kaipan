@@ -29,10 +29,10 @@ $(function () {
         } else if (sv.length > 1) {
             $(".mask").show();
             $(".del-shopName").html("s");
-            $(".del-confirm").html("您确定删除选中的"+sv.length+"套房源？");
+            $(".del-confirm").html("您确定删除选中的" + sv.length + "套房源？");
             productIds = sv.join(",");
         }
-        $(".del-sure").on('touchstart',function () {
+        $(".del-sure").on('touchstart', function () {
             Cart_removeBatch();
         })
     });
@@ -129,18 +129,18 @@ function Cart_query() {
         success: function (data) {
             data = JSON.parse(data);
             console.log(data)
-            if(data.length>0){
+            if (data.length > 0) {
                 var list = '<div class="cartTip">' +
                     '<p class="shopTip">您当前最多支持提交一套房源订单</p>' +
                     '<p class="editTip hide">您可以长按房源拖动进行排序</p></div>';
                 $.each(data, function (i, s) {
                     list += '<div class="banner pl48">';
                     list += '<i class="icon-sort my-handle"></i>';
-                    if(s.productStatus == 0){
+                    if (s.productStatus == 0) {
                         list += '<span class="saleStatus sellIn">待售</span>';
-                    }else if(s.productStatus == 1){
+                    } else if (s.productStatus == 1) {
                         list += '<span class="saleStatus sellOut">已售</span>';
-                    }else if(s.productStatus == 2){
+                    } else if (s.productStatus == 2) {
                         list += '<span class="saleStatus sellIn">可售</span>';
                     }
                     list += '<input type="checkbox" name="cartItem" id="shopChoose' + i + '" value="' + s.productId + '">';
@@ -154,7 +154,7 @@ function Cart_query() {
                     list += '<input type="hidden" name="sortIndex" value="' + s.sortIndex + '"></div>'
                 });
                 $(".shopCart-container").html(list);
-            }else{
+            } else {
                 $(".shopCart-container").html("<p class='noCartTip'>当前购物车没有房源</p>");
             }
 
@@ -218,8 +218,8 @@ function Cart_removeBatch() {
                 YDUI.dialog.toast('删除成功', 'success', 800);
                 setTimeout(function () {
                     window.location.reload();
-                },1000)
-            }else{
+                }, 1000)
+            } else {
                 YDUI.dialog.toast('删除失败', 'error', 1000);
             }
         }
@@ -246,10 +246,10 @@ function DealBatch() {
                 YDUI.dialog.toast('提交成功', 'success', 1000);
                 setTimeout(function () {
                     window.location.reload();
-                },1000)
-            }else if (data == 0){
+                }, 1000)
+            } else if (data == 0) {
                 YDUI.dialog.toast('认购数量达到上限', 'error', 1000);
-            } else{
+            } else {
                 YDUI.dialog.toast('提交失败', 'error', 1000);
             }
         }

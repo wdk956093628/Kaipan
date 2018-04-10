@@ -148,9 +148,8 @@
 
 .tag {
     display: inline-block;
+    padding: 1px 3px;
     margin-right: .16rem;
-    width: 1.06rem;
-    height: .4rem;
     text-align: center;
     line-height: .4rem;
     font-size: 11px;
@@ -468,6 +467,8 @@
     height: 1.16rem;
     text-align: center;
     line-height: 1rem;
+    font-weight: bold;
+    color: #fff;
     background-image: linear-gradient(90deg, #f24a61 0%, #fe7e4e 100%), linear-gradient(#56ce21, #56ce21);
     box-shadow: 0 5px 13px 1px rgba(242, 74, 97, .3);
     border: solid 4px #ffffff;
@@ -475,11 +476,6 @@
     z-index: 100;
 }
 
-.snapping-house a {
-    padding: 8px;
-    font-weight: bold;
-    color: #fff;
-}
 
 .icon {
     width: .44rem;
