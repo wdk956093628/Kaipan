@@ -19,7 +19,7 @@ function CheckToken() {
     var token = $.cookie('token');
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
-        type: "post",
+        type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
         data: {
@@ -40,7 +40,7 @@ function Customer_query() {
     console.log(customerId);
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Customer_query",
-        type: "post",
+        type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
         data: {

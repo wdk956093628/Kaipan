@@ -6,7 +6,6 @@ var pageCount = -1;
 
 $(function () {
     CheckToken();
-    autoSort();
     ProjectInfo_query();
     Model_query();
 
@@ -41,9 +40,10 @@ function CheckToken() {
 
 //进入首页，自动摇号
 function autoSort() {
+    console.log(customerId);
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/AutoSort",
-        type: "post",
+        type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
         data: {

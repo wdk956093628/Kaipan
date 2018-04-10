@@ -103,7 +103,6 @@ function CheckToken() {
         success: function (data) {
             if (data > 0) {
                 customerId = data;
-                console.log(data);
                 Cart_query();
             } else {
                 window.location.href = '../html/login.html'
@@ -114,9 +113,10 @@ function CheckToken() {
 
 // 购物车查询
 function Cart_query() {
+
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Cart_query",
-        type: "post",
+        type: "get",
         async: false,
         dataType: 'jsonp',
         jsonp: "callback",
@@ -128,6 +128,7 @@ function Cart_query() {
         },
         success: function (data) {
             data = JSON.parse(data);
+            console.log(data)
             if(data.length>0){
                 var list = '<div class="cartTip">' +
                     '<p class="shopTip">您当前最多支持提交一套房源订单</p>' +
@@ -135,7 +136,13 @@ function Cart_query() {
                 $.each(data, function (i, s) {
                     list += '<div class="banner pl48">';
                     list += '<i class="icon-sort my-handle"></i>';
-                    list += '<span class="saleStatus sellOut">已售</span>';
+                    if(s.productStatus == 0){
+                        list += '<span class="saleStatus sellIn">待售</span>';
+                    }else if(s.productStatus == 1){
+                        list += '<span class="saleStatus sellOut">已售</span>';
+                    }else if(s.productStatus == 2){
+                        list += '<span class="saleStatus sellIn">可售</span>';
+                    }
                     list += '<input type="checkbox" name="cartItem" id="shopChoose' + i + '" value="' + s.productId + '">';
                     list += '<label for="shopChoose' + i + '"></label>';
                     list += '<p class="shopName">' + s.projectName + s.buildingNo + '栋' + s.unit + '单元' + s.productName + '室' + '</p>';
@@ -146,9 +153,9 @@ function Cart_query() {
                     list += '<input type="hidden" name="productId" value="' + s.productId + '">';
                     list += '<input type="hidden" name="sortIndex" value="' + s.sortIndex + '"></div>'
                 });
-                $(".g-scrollview").html(list);
+                $(".shopCart-container").html(list);
             }else{
-                $(".g-scrollview").html("<p class='noCartTip'>当前购物车没有房源</p>");
+                $(".shopCart-container").html("<p class='noCartTip'>当前购物车没有房源</p>");
             }
 
         }
@@ -221,9 +228,9 @@ function Cart_removeBatch() {
 
 //提交订单
 function DealBatch() {
-
+    console.log(productIds)
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Deal",
+        url: "http://123.206.206.90:2511/AjaxService.svc/DealBatch",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -234,12 +241,15 @@ function DealBatch() {
             userId: userId
         },
         success: function (data) {
+            console.log(data)
             if (data > 0) {
                 YDUI.dialog.toast('提交成功', 'success', 1000);
                 setTimeout(function () {
                     window.location.reload();
                 },1000)
-            }else{
+            }else if (data == 0){
+                YDUI.dialog.toast('认购数量达到上限', 'error', 1000);
+            } else{
                 YDUI.dialog.toast('提交失败', 'error', 1000);
             }
         }

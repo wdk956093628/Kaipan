@@ -477,7 +477,7 @@
 
 .snapping-house a {
     padding: 8px;
-    /*font: bold 0.28rem PingFang-SC-Bold;*/
+    font-weight: bold;
     color: #fff;
 }
 

@@ -111,6 +111,12 @@ input[type=checkbox]:checked + label:after {
     background-color: rgba(115, 218, 58, 0.1);
 }
 
+/*被拒绝*/
+.refused{
+    color: #d2d2d2;
+    background-color: rgba(240, 244, 245, .95);
+}
+
 /*楼盘信息*/
 .shopInfo {
     font-size: 0.25rem;
@@ -119,10 +125,14 @@ input[type=checkbox]:checked + label:after {
     color: #999999;
 }
 
-.shopType::after, .shopType::before {
-    content: "|";
-    color: #d2d2d2;
-    margin: 0 6px;
+.shopType::after,
+.shopType::before {
+    content: " ";
+    display: inline-block;
+    width: 0;
+    height: 0.2rem;
+    border-left: 1px solid #d2d2d2;
+    margin: 0 7px;
 }
 
 /*购物车底部编辑栏*/

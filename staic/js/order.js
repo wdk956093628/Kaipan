@@ -1,14 +1,56 @@
 var projectId = 1;
-var productId = -1;
-var startIndex = -1;
-var pageCount = -1;
+var userId = -1;
+var productId;
+var productStatus;
+var customerId;
+var dealTime;
+var confirmTime;
+var customerName;
+var customerIdCard;
+var customerPhone;
 
 $(function () {
+    //检查token
     CheckToken();
-    Customer_queryOrdered();
 
-    $(".order-item").click(function () {
-        window.location.href = "orderDetails.html"
+    //点击订单进入详情页
+    $(".order-container").on('click', '.order-item', function () {
+        productId = $(this).children("input[name='productId']").attr("value");
+        productStatus = $(this).children("input[name='productStatus']").attr("value");
+        dealTime = $(this).children("input[name='dealTime']").attr("value");
+        confirmTime = $(this).children("input[name='confirmTime']").attr("value");
+        customerName = $(this).children("input[name='customerName']").attr("value");
+        customerIdCard = $(this).children("input[name='customerIdCard']").attr("value");
+        customerPhone = $(this).children("input[name='customerPhone']").attr("value");
+        $.cookie("productId", productId, {expires: 1, path: '/'});
+        $.cookie("productStatus", productStatus, {expires: 1, path: '/'});
+        $.cookie("dealTime", dealTime, {expires: 1, path: '/'});
+        $.cookie("confirmTime", confirmTime, {expires: 1, path: '/'});
+        $.cookie("customerName", customerName, {expires: 1, path: '/'});
+        $.cookie("customerIdCard", customerIdCard, {expires: 1, path: '/'});
+        $.cookie("customerPhone", customerPhone, {expires: 1, path: '/'});
+        window.location.href = "orderDetails.html";
+    });
+    // 撤单弹框
+    $(".revoke").on('touchstart',function () {
+        $(".mask").show();
+        $(".revoke-dialog").show();
+    });
+    // 确认撤单
+    $(".revoke-sure").on('touchstart',function () {
+        Withdraw();
+        $(".mask").hide();
+        $(".revoke-dialog").hide();
+    });
+    //取消按钮
+    $(".cancel").click(function () {
+        $(".mask").hide();
+        $(".revoke-dialog").hide();
+    });
+    //关闭按钮
+    $(".close").click(function () {
+        $(".mask").hide();
+        $(".revoke-dialog").hide();
     });
 
 });
@@ -24,45 +66,150 @@ function CheckToken() {
             token: token
         },
         success: function (data) {
-                customerId = data;
-                console.log(data);
-                Deal_query();
-        }
-    })
-};
-
-function Customer_queryOrdered() {
-    $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Customer_queryOrdered",
-        type: "post",
-        dataType: 'jsonp',
-        jsonp: "callback",
-        data: {
-            projectId:projectId,
-            startIndex:startIndex,
-            pageCount:pageCount
-        },
-        success:function (data) {
-            console.log(data)
+            customerId = data;
+            Deal_query();
         }
     })
 }
 
+// 订单列表
 function Deal_query() {
+
     $.ajax({
         url: "http://123.206.206.90:2511/AjaxService.svc/Deal_query",
-        type: "post",
+        type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
         data: {
+            projectId: projectId,
+            customerId: customerId
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            console.log(data);
+            if (data.length > 1) {
+                var list = "";
+                $.each(data, function (i, o) {
+                    list += '<div class="banner pt15 order-item">';
+                    list += '<p class="shopName">' + o.projectName + o.buildingNo + "栋" + o.unit + "单元" + o.productName + "室" + '</p>';
+                    list += '<p class="shopInfo"><span class="shopNum">' + o.modelName + o.modelId + '</span>';
+                    list += '<span class="shopType">' + o.modelType + '</span>';
+                    list += '<span class="shopArea">' + o.area + '</span>m²</p>';
+                    list += '<p class="price"><span class="price-icon">￥</span><span class="house-price">' + (o.totalMoney / 10000).toFixed(2) + '</span>万</p>';
+                    list += '<input type="hidden" name="productId" value="' + o.productId + '">';
+                    list += '<input type="hidden" name="productStatus" value="' + o.productStatus + '">';
+                    list += '<input type="hidden" name="dealTime" value="' + o.confirmTime + '">';
+                    list += '<input type="hidden" name="confirmTime" value="' + o.dealTime + '">';
+                    list += '<input type="hidden" name="customerName" value="' + o.customerName + '">';
+                    list += '<input type="hidden" name="customerIdCard" value="' + o.customerIdCard + '">';
+                    list += '<input type="hidden" name="customerPhone" value="' + o.customerPhone + '">';
+                    if (o.productStatus == 0) {
+                        list += '<span class="shopStatus audit">待审核</span></div>';
+                    } else if (o.productStatus == 1) {
+                        list += '<span class="shopStatus subscribed">已同意</span></div>';
+                    } else if (o.productStatus == 2) {
+                        list += '<span class="shopStatus refused">已拒绝</span></div>';
+                    }
+                });
+                $(".order-container").html(list);
+
+            } else {
+                $(".order-container").html("<p class='noCartTip'>当前没有订单信息，请下单</p>");
+            }
+        }
+    })
+}
+
+//订单详情信息
+function orderDetails() {
+    productId = $.cookie('productId');
+    productStatus =$.cookie('productStatus');
+    dealTime = $.cookie('dealTime');
+    confirmTime = $.cookie('confirmTime');
+    customerName = $.cookie('customerName');
+    customerIdCard = $.cookie('customerIdCard');
+    customerPhone = $.cookie('customerPhone');
+
+    $.ajax({
+        url: "http://123.206.206.90:2511/AjaxService.svc/Product_queryArray",
+        type: "get",
+        dataType: 'jsonp',
+        jsonp: "callback",
+        data: {
+            productId: productId,
+            projectId: projectId,
+            buildingNo: -1,
+            unit: -1,
+            floorIndex: -1,
+            modelId: -1
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            console.log(data)
+            $.each(data, function (i, o) {
+                $(".houseName").html(o.projectName + o.buildingNo + '栋' + o.unit + '单元' + o.productName + '室');
+                $(".orderDetails-tag").html(o.modelName + o.modelId  + '户型');
+                $(".orderDetails-type").html(o.modelType);
+                $(".house-price").html((o.totalMoney / 10000).toFixed(2));
+                $(".floorIndex").html(o.floorIndex + '层');
+                $(".builtArea").html((o.area / 1).toFixed(2) + 'm²');
+                $(".builtUnitPrice").html((o.unitPrice / 1).toFixed(2) + '/m²');
+                $(".floorCount").html(o.floorCount+'层');
+                $(".orientation").html(o.orientation);
+                if (o.decorateMode == 0) {
+                    $(".decorateMode").html("普通");
+                } else if (o.decorateMode == 1) {
+                    $(".decorateMode").html("精装");
+                }
+
+                //订单状态图标
+                if (productStatus == 0) {
+                   $(".deal-icon").addClass("deal-audit");
+                   $(".deal-tip").html('稍等，订单正在审核中');
+                } else if (productStatus == 1) {
+                    $(".deal-icon").addClass("deal-success");
+                    $(".deal-tip").html('恭喜您，认购成功');
+                } else if (productStatus == 2) {
+                    $(".deal-icon").addClass("deal-fail");
+                    $(".deal-tip").html('抱歉，认购失败');
+                }
+
+                $(".dealTime").html(dealTime);
+                $(".dealPeople").html(customerName);
+                $(".id-card").html(customerIdCard);
+                $(".telephone").html(customerPhone);
+                $(".passTime").html(confirmTime);
+            });
+        }
+    });
+}
+
+//撤单按钮
+function Withdraw() {
+
+    $.ajax({
+        url: 'http://123.206.206.90:2511/AjaxService.svc/Withdraw',
+        type:'get',
+        dataType:'jsonp',
+        jsonp:'callback',
+        data:{
             projectId:projectId,
             customerId:customerId,
             productId:productId,
-            startIndex:startIndex,
-            pageCount:pageCount
+            userId:userId
         },
         success:function (data) {
-            console.log(data)
+            console.log(data);
+            if(data === 1){
+                YDUI.dialog.toast('撤单成功', 'success', 1000);
+            }else if(data === -101){
+                YDUI.dialog.toast('撤单失败，订单不存在', 'error', 1000);
+            }else if(data === -102){
+                YDUI.dialog.toast('撤单失败，超过订单上限', 'error', 1000);
+            }
+            setTimeout(function () {
+                window.location.href = 'order.html'
+            },1200);
         }
     })
 }

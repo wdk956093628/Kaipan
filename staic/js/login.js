@@ -28,7 +28,6 @@ $(document).ready(function () {
     //     }
     // });
 
-
     // 验证手机号码
     $("#telephone").blur(function () {
         var tel = $(this).val();
@@ -61,7 +60,6 @@ $(document).ready(function () {
 
 
     /*获取短信验证码倒计时*/
-
     /* 定义参数 */
     $getCode.sendCode({
         disClass: 'btn-disabled',
@@ -81,7 +79,6 @@ $(document).ready(function () {
         }
     });
 
-
     // 登录
     $(".login_but").on('touchstart', function () {
         CheckShortCode();
@@ -89,6 +86,7 @@ $(document).ready(function () {
 
 });
 
+//发送验证码
 function storeShortCode() {
 
     $.ajax({
@@ -116,6 +114,7 @@ function storeShortCode() {
     })
 }
 
+//检查验证码
 function CheckShortCode() {
     phone = $("#telephone").val();
     idCard = $("#id_card").val();
@@ -149,6 +148,7 @@ function CheckShortCode() {
     })
 }
 
+//检查token
 function CheckToken() {
     var token = $.cookie('token');
     $.ajax({
