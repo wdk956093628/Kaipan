@@ -1,4 +1,4 @@
-var projectId = 1;
+var projectId = $.cookie("projectId");
 var userId = -1;
 var productId;
 var productStatus;
@@ -57,7 +57,7 @@ $(function () {
 function CheckToken() {
     var token = $.cookie('token');
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
+        url: url+"CheckToken",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -66,16 +66,20 @@ function CheckToken() {
         },
         success: function (data) {
             customerId = data;
-            Deal_query();
+            if (data > 0) {
+                customerId = data;
+                Deal_query();
+            } else {
+                window.location.href = 'login.html'
+            }
         }
     })
 }
 
 // 订单列表
 function Deal_query() {
-
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Deal_query",
+        url: url+"Deal_query",
         type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -85,7 +89,6 @@ function Deal_query() {
         },
         success: function (data) {
             data = JSON.parse(data);
-            console.log(data);
             if (data.length >= 1) {
                 var list = "";
                 $.each(data, function (i, o) {
@@ -130,7 +133,7 @@ function orderDetails() {
     customerPhone = $.cookie('customerPhone');
 
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Product_queryArray",
+        url: url+"Product_queryArray",
         type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -185,9 +188,8 @@ function orderDetails() {
 
 //撤单按钮
 function Withdraw() {
-
     $.ajax({
-        url: 'http://123.206.206.90:2511/AjaxService.svc/Withdraw',
+        url: url+'Withdraw',
         type:'get',
         dataType:'jsonp',
         jsonp:'callback',

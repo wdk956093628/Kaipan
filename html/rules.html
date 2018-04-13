@@ -70,46 +70,26 @@
         </p>
     </div>
     <!--按钮-->
-    <button type="button" class="rockNum">
+    <button type="button" class="rockNum" disabled>
         我知道了(<span class="rockTime">5</span>s),开始摇号
     </button>
 </div>
 
 <script type="text/javascript" src="../staic/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../staic/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="../staic/ydui/js/ydui.js"></script>
+<script type="text/javascript" src="../staic/js/public.js"></script>
 <script type="text/javascript" src="../staic/js/rules.js"></script>
-<script type="text/javascript" src="../staic/simditor/scripts/module.min.js"></script>
-<script type="text/javascript" src="../staic/simditor/scripts/hotkeys.min.js"></script>
-<script type="text/javascript" src="../staic/simditor/scripts/simditor.min.js"></script>
+
+<!--<script type="text/javascript" src="../staic/simditor/scripts/module.min.js"></script>-->
+<!--<script type="text/javascript" src="../staic/simditor/scripts/hotkeys.min.js"></script>-->
+<!--<script type="text/javascript" src="../staic/simditor/scripts/simditor.min.js"></script>-->
 </body>
 <script>
     $(function () {
         // var editor = new Simditor({
         //     textarea: $('#editor'),
         // });
-
-        var rockTime = 5;
-        var timer = setInterval(function () {
-            rockTime--;
-            if (rockTime == 0) {
-                $(".rockNum").html("开始摇号");
-                clearInterval(timer);
-            } else {
-                $(".rockTime").html(rockTime);
-            }
-        }, 1000);
-
-        setTimeout(function () {
-            $(".rockNum").addClass("but");
-            $(".rockNum").addClass("rockNum-active");
-            $(".rockNum-active").attr("onclick", "javascript:window.location.href='./index.html'")
-        }, 5 * 1000);
-
-        // var editor = new Simditor({
-        //     textarea: $('#editor')
-        //     //optional options
-        // });
-
     });
 </script>
 </html>

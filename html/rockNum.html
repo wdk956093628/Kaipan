@@ -44,7 +44,7 @@
     <div class="g-scrollview">
         <!-- banner图 -->
         <div class="home-banner">
-            <img src="../staic/images/index_banner.jpg" alt="">
+            <img class="projectImg" src="" alt="">
             <div class="kaipan-time">
                 <p class="time-item">开盘时间</p>
                 <p class="time-item"><b class="year"></b>年<b class="month"></b>月<b class="day"></b>日</p>
@@ -113,28 +113,11 @@
                 </div>
             </div>
         </div>
-
-        <!--弹出框-->
-        <div class="mask">
-            <div class="rockNumTip">
-                <div class="decorate">
-                    <div class="close"></div>
-                </div>
-                <div class="rockNum-content">
-                    <p>摇号成功</p>
-                    <p>90</p>
-                    <button type="button" class="but know">好的</button>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- 底部导航 -->
     <footer class="bottom">
-        <!--<button type="button" class="grabHouse">-->
-        <!--立即抢房（01:27:28）-->
-        <!--</button>-->
         <button type="button" class="but rockNum">
-            开始摇号
+            开始选房
         </button>
     </footer>
 </section>
@@ -143,6 +126,7 @@
 <script type="text/javascript" src="../staic/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="../staic/ydui/js/ydui.js"></script>
 <script src="https://cdn.bootcss.com/Swiper/4.2.0/js/swiper.min.js"></script>
+<script type="text/javascript" src="../staic/js/public.js"></script>
 <script type="text/javascript" src="../staic/js/home.js"></script>
 </body>
 <script>
@@ -151,17 +135,20 @@
         $(".mask").on('touchmove', function (e) {
             e.preventDefault();  //阻止默认行为
         });
-    })
 
-    // swiper配置
-    var mySwiper = new Swiper('.swiper-container', {
-        slidesPerView: 2.5,
-        pagination: {
-            el: '.swiper-pagination'
-        },
-        initialSlide :0,
-        observer:true,//修改swiper自己或子元素时，自动初始化swiper
-        observeParents:true//修改swiper的父元素时，自动初始化swiper
+        // swiper配置
+        var mySwiper = new Swiper('.swiper-container', {
+            slidesPerView: 2.5,
+            pagination: {el: '.swiper-pagination'},
+            initialSlide :0,
+            observer:true,//修改swiper自己或子元素时，自动初始化swiper
+            observeParents:true//修改swiper的父元素时，自动初始化swiper
+        });
+
+        $(".rockNum").click(function () {
+            window.location.href = "house.html";
+        })
+
     });
 
 </script>

@@ -1,11 +1,9 @@
-var projectId = 1;
+var projectId = $.cookie("projectId");
 var customerId;
 var sortIndex;
 var userId = -1;
 var productId;
 var productIds = '';
-var startIndex = -1;
-var pageCount = -1;
 
 $(function () {
     CheckToken();
@@ -93,7 +91,7 @@ $(function () {
 function CheckToken() {
     var token = $.cookie('token');
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
+        url: url+"CheckToken",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -103,19 +101,38 @@ function CheckToken() {
         success: function (data) {
             if (data > 0) {
                 customerId = data;
-                Cart_query();
+                Cart_query()
             } else {
-                window.location.href = '../html/login.html'
+                window.location.href = 'login.html'
             }
         }
     })
 }
 
+//获取最大认购数量
+function Customer_query() {
+    $.ajax({
+        url: url+"Customer_query",
+        type: "get",
+        dataType: 'jsonp',
+        jsonp: "callback",
+        data: {
+            projectId: projectId,
+            customerId: customerId,
+            startIndex: -1,
+            pageCount: -1
+        },
+        success: function (data) {
+            data = JSON.parse(data.replace(/\[|]/g, ''));
+            $(".cartCount").html(data.rightCount)
+        }
+    });
+}
+
 // 购物车查询
 function Cart_query() {
-
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Cart_query",
+        url: url+"Cart_query",
         type: "get",
         async: false,
         dataType: 'jsonp',
@@ -123,16 +140,13 @@ function Cart_query() {
         data: {
             projectId: projectId,
             customerId: customerId,
-            startIndex: startIndex,
-            pageCount: pageCount
+            startIndex: -1,
+            pageCount: -1
         },
         success: function (data) {
             data = JSON.parse(data);
-            console.log(data)
+            var list = "";
             if (data.length > 0) {
-                var list = '<div class="cartTip">' +
-                    '<p class="shopTip">您当前最多支持提交一套房源订单</p>' +
-                    '<p class="editTip hide">您可以长按房源拖动进行排序</p></div>';
                 $.each(data, function (i, s) {
                     list += '<div class="banner pl48">';
                     list += '<i class="icon-sort my-handle"></i>';
@@ -153,14 +167,33 @@ function Cart_query() {
                     list += '<input type="hidden" name="productId" value="' + s.productId + '">';
                     list += '<input type="hidden" name="sortIndex" value="' + s.sortIndex + '"></div>'
                 });
-                $(".shopCart-container").html(list);
+                $(".shopCart-container").append(list);
             } else {
+                $(".bottom").hide();
                 $(".shopCart-container").html("<p class='noCartTip'>当前购物车没有房源</p>");
             }
 
         }
     })
 }
+
+
+//购物车最大数量
+// function Properties_query() {
+//     $.ajax({
+//         url: url + "Properties_query",
+//         type: "get",
+//         dataType: 'jsonp',
+//         jsonp: "callback",
+//         data: {
+//             projectId: projectId
+//         },
+//         success: function (data) {
+//             console.log(data)
+//             $(".cartCount").html(data)
+//         }
+//     })
+// }
 
 // 拖动排序
 function sortable() {
@@ -181,9 +214,8 @@ function sortable() {
 
 // 购物车拖动
 function Cart_insert() {
-
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Cart_insert",
+        url: url+"Cart_insert",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -201,9 +233,8 @@ function Cart_insert() {
 
 //删除购物车
 function Cart_removeBatch() {
-
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Cart_removeBatch",
+        url: url+"Cart_removeBatch",
         type: "post",
         async: false,
         dataType: 'jsonp',
@@ -228,9 +259,8 @@ function Cart_removeBatch() {
 
 //提交订单
 function DealBatch() {
-    console.log(productIds)
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/DealBatch",
+        url: url+"DealBatch",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -238,7 +268,7 @@ function DealBatch() {
             projectId: projectId,
             customerId: customerId,
             productIds: productIds,
-            userId: userId
+            userId: userId,
         },
         success: function (data) {
             console.log(data)

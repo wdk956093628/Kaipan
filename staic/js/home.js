@@ -1,13 +1,15 @@
-var projectId = 1;
+var projectId;
 var customerId;
-var startIndex = -1;
-var pageCount = -1;
+var token = "";
+var lineIndex;
 
 
 $(function () {
     CheckToken();
-    ProjectInfo_query();
-    Model_query();
+
+    $("#toLoupanDetail").click(function () {
+        window.location.href = "rockNum.html";
+    });
 
     //关闭弹出框
     $(".close").click(function () {
@@ -22,9 +24,9 @@ $(function () {
 
 //获取customerId
 function CheckToken() {
-    var token = $.cookie('token');
+    token = $.cookie("token");
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
+        url: url + "CheckToken",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -32,43 +34,78 @@ function CheckToken() {
             token: token
         },
         success: function (data) {
-            customerId = data;
-            autoSort()
+            if (data > 0) {
+                customerId = data;
+                Customer_query(customerId);
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+    })
+}
+
+function Customer_query(customerId) {
+    $.ajax({
+        url: url + "Customer_query",
+        type: "get",
+        dataType: 'jsonp',
+        jsonp: "callback",
+        data: {
+            projectId: -1,
+            customerId: customerId,
+            startIndex: -1,
+            pageCount: -1
+        },
+        success: function (data) {
+            // lineIndex = JSON.parse(data)[0].lineIndex;
+            // $.cookie("lineIndex",lineIndex,{ expires: 1,path: '/'});
+            projectId = JSON.parse(data)[0].projectId;
+            $.cookie("projectId", projectId, {expires: 1, path: '/'});
+            Properties_query();
+            ProjectInfo_query();
+            Model_query();
+        }
+    })
+}
+
+//查询摇号/秒开
+function Properties_query() {
+    $.ajax({
+        url: url + "Properties_query",
+        type: "get",
+        dataType: 'jsonp',
+        jsonp: "callback",
+        data: {
+            projectId: projectId
+        },
+        success: function (data) {
+            if (data === 0) {
+                $(".sequence").html("秒开");
+            } else {
+                showSort();
+            }
         }
     })
 }
 
 //进入首页，自动摇号
-function autoSort() {
-    // console.log(customerId);
-    $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/AutoSort",
-        type: "get",
-        dataType: 'jsonp',
-        jsonp: "callback",
-        data: {
-            projectId: projectId,
-            customerId: customerId
-        },
-        success: function (data) {
-            console.log(data);
-            if (data >= 1) {
-                $(".lineIndex").html(data);
-                if ($(".lineIndex").html() == "") {
-                    $(".mask").show();
-                    $(".rockNumTip").show();
-                    $(".rockNum-result").html(data)
-                }
-            }
+function showSort() {
+    if ($.cookie("sortCode")) {
+        $(".lineIndex").html($.cookie("sortCode"));
+        if ($(".lineIndex").html() == "") {
+            $(".mask").show();
+            $(".rockNumTip").show();
+            $(".rockNum-result").html($.cookie("sortCode"))
         }
-    });
+    }
 }
 
 //首页楼盘信息展示
 function ProjectInfo_query() {
+    projectId = $.cookie("projectId");
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/ProjectInfo_query",
-        type: "post",
+        url: url + "ProjectInfo_query",
+        type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
         data: {
@@ -76,6 +113,9 @@ function ProjectInfo_query() {
         },
         success: function (data) {
             data = JSON.parse(data)[0];
+            //项目图片
+            getProjectPhotos(data.pictures);
+            //项目信息
             var timer = data.openTime.split(" ");
             var year = timer[0].split("/");
             var hour = timer[1].split(":");
@@ -106,8 +146,9 @@ function ProjectInfo_query() {
 
 // 户型信息
 function Model_query() {
+    projectId = $.cookie("projectId");
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Model_query",
+        url: url + "Model_query",
         async: true,
         type: "post",
         dataType: 'jsonp',
@@ -119,9 +160,11 @@ function Model_query() {
         },
         success: function (data) {
             data = JSON.parse(data);
-            // console.log(data);
             var list = "";
             $.each(data, function (i, o) {
+                //户型图片
+                getModelphoto(o.pictures);
+                //户型信息
                 list += '<div class="ht-item swiper-slide">';
                 list += '<div class="floor-plans">';
                 list += '<span class="typeCode">' + o.modelName + '</span>';
@@ -130,18 +173,16 @@ function Model_query() {
                 list += '<p class="huxing-info"><span class="houseType">' + o.modelType + '</span>';
                 list += '<p><span class="houseAmount">' + o.count + '套</span></p>';
                 list += '</div>';
-                getPhotos(o.pictures);
             });
             $(".ht-content").html(list);
         }
     });
 }
 
-// 户型图片
-function getPhotos(photoId) {
-    var photoId = photoId;
+// 项目图片
+function getProjectPhotos(photoId) {
     $.ajax({
-        url: 'http://192.168.98.24:8080/picture/getPhotos',
+        url: photoUrl + 'getPhotos',
         type: 'post',
         crossDomain: true,
         data: {
@@ -151,8 +192,27 @@ function getPhotos(photoId) {
             userKey: 1
         },
         success: function (data) {
-            var dataUrl = data.data.data[0].photoUrl;
-            $(".ht-img").attr("src", dataUrl)
+            var projectUrl = data.data.data[0].photoUrl;
+            $(".projectImg").attr("src", projectUrl);
+        }
+    })
+}
+
+// 户型图片
+function getModelphoto(photoId) {
+    $.ajax({
+        url: photoUrl + 'getPhotos',
+        type: 'post',
+        crossDomain: true,
+        data: {
+            photoId: photoId,
+            photoType: 2,
+            userName: 1,
+            userKey: 1
+        },
+        success: function (data) {
+            var mnodelUrl = data.data.data[0].photoUrl;
+            $(".ht-img").attr("src", mnodelUrl);
         }
     })
 }

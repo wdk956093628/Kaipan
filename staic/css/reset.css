@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-html,body{-webkit-user-select:none;-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-touch-callout:none;-webkit-box-sizing: border-box;box-sizing: border-box;}
+html,body{-webkit-user-select:none;-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-touch-callout:none;-webkit-box-sizing: border-box;box-sizing: border-box;overflow: hidden}
 body,button,input,select,textarea {font:14px 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,'Hiragino Sans GB',sans-serif\Microsoft YaHei;}
 html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 {-webkit-text-size-adjust:none;}/*阻止旋转屏幕时自动调整字体大小*/
 textarea{resize:none;}

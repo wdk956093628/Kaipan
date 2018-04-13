@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../staic/css/reset.css">
     <link rel="stylesheet" href="../staic/css/home.css">
     <link rel="stylesheet" href="../staic/css/house.css">
+    <link href="https://cdn.bootcss.com/Swiper/4.2.0/css/swiper.min.css" rel="stylesheet">
 </head>
 <body>
 <section class="g-flexview">
@@ -32,7 +33,9 @@
     <div class="g-scrollview">
         <!-- banner图 -->
         <div class="home-banner">
-            <img src="../staic/images/index_banner.jpg" alt="">
+            <div class="hd-container swiper-container">
+                <div class="hd-content swiper-wrapper"></div>
+            </div>
         </div>
         <!--房源状态-->
         <div class="banner pt15">
@@ -70,7 +73,9 @@
                     加入购物车成功
                 </span>
                 <button class="cancel house-cancel">好的</button>
-                <a href="./shopCart.html"><button class="but toShopCart">去购物车</button></a>
+                <a href="./shopCart.html">
+                    <button class="but toShopCart">去购物车</button>
+                </a>
             </div>
             <div class="close houseDetail-close"></div>
         </div>
@@ -82,7 +87,9 @@
                     购买成功
                 </span>
                 <button class="cancel house-cancel">好的</button>
-                <a href="./order.html"><button class="but toShopCart">查看订单</button></a>
+                <a href="./order.html">
+                    <button class="but toShopCart">查看订单</button>
+                </a>
             </div>
             <div class="close houseDetail-close"></div>
         </div>
@@ -98,17 +105,27 @@
 <script type="text/javascript" src="../staic/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../staic/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="../staic/ydui/js/ydui.js"></script>
+<script src="https://cdn.bootcss.com/Swiper/4.2.0/js/swiper.min.js"></script>
+<script type="text/javascript" src="../staic/js/public.js"></script>
 <script type="text/javascript" src="../staic/js/house.js"></script>
 <!--<script type="text/javascript" src="../staic/js/home.js"></script>-->
 </body>
 <script>
     $(function () {
-        $(".mask").on('touchmove',function(e){
+        $(".mask").on('touchmove', function (e) {
             e.preventDefault();  //阻止默认行为
-        })
+        });
 
         //获取房源详情
         Product_queryCartCount();
+
+        // swiper配置
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay:true,
+            loop : true,
+            observer:true,//修改swiper自己或子元素时，自动初始化swiper
+            observeParents:true//修改swiper的父元素时，自动初始化swiper
+        });
     })
 </script>
 </html>

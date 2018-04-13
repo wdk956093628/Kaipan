@@ -2,6 +2,7 @@ var phone = "";
 var idCard = "";
 var shortCode = "";
 var $getCode = $('#J_GetCode');
+var token = "";
 
 $(document).ready(function () {
     //输入密码出现提示图标
@@ -32,12 +33,12 @@ $(document).ready(function () {
     $("#telephone").blur(function () {
         var tel = $(this).val();
         var reg = /^1[34578][0-9]{9}$/;
-        if (tel.length != 0) {
+        if (tel.length > 0) {
             if (!reg.test(tel)) {
-                $(".psdTip").html("<span style='color:#f00;'>*</span>请输入正确的手机号");
+                $(".psdTip").html("*请输入正确的手机号码");
             }
         } else {
-            $(".psdTip").html("<span style='color:#f00;'>*</span>请输入手机号");
+            $(".psdTip").html("*请输入手机号码");
         }
     }).focus(function () {
         $(".psdTip").html("");
@@ -47,7 +48,7 @@ $(document).ready(function () {
     $("#id_card").blur(function () {
         var idval = $(this).val();
         var reg2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
-        if (idval.length != 0) {
+        if (idval.length > 0) {
             if (!reg2.test(idval)) {
                 $(".psdTip").html("*请输入正确的身份证号码");
             }
@@ -69,28 +70,34 @@ $(document).ready(function () {
         resetStr: '重新获取验证码'
     });
 
+    var click1 = 0;
     $getCode.on('touchstart', function () {
         phone = $("#telephone").val();
         idCard = $("#id_card").val();
-        if (phone != "" && idCard != "") {
-            storeShortCode();
-        } else {
-            $(".psdTip").html("请输入手机号码以及身份证号码");
+        verifyCode = $("#verify").val();
+        if (click1 == 0) {
+            if (phone != "" && idCard != "") {
+                storeShortCode();
+            } else {
+                $(".psdTip").html("请输入手机号码以及身份证号码");
+            }
+            click1 = 1;
+            setTimeout(function () { click1 = 0 }, 2000);
         }
     });
 
     // 登录
     $(".login_but").on('touchstart', function () {
-        CheckShortCode();
+            CheckShortCode();
     });
+
 
 });
 
 //发送验证码
 function storeShortCode() {
-
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Customer_storeShortCode",
+        url: url+"Customer_storeShortCode",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -119,18 +126,10 @@ function CheckShortCode() {
     phone = $("#telephone").val();
     idCard = $("#id_card").val();
     shortCode = $("#verify").val();
-    // /*判断重复提交*/
-    // if (loginSum == 1) {
-    //     //重复提交
-    //     $(".psdTip").html("正在登陆，请稍候");
-    //     return;
-    // }
-    // if (loginSum == 0) {
-    //     loginSum = 1;
-    // }
 
+    /*判断重复提交*/
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/CheckShortCode",
+        url: url+"CheckShortCode",
         type: "post",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -140,30 +139,22 @@ function CheckShortCode() {
             shortCode: shortCode
         },
         success: function (data) {
-            console.log(data);
-            $.cookie("token", data, {expires: 1, path: '/'});
-            // CheckToken()
-        }
-    })
-}
-
-//检查token
-function CheckToken() {
-    var token = $.cookie('token');
-    $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
-        type: "post",
-        dataType: 'jsonp',
-        jsonp: "callback",
-        data: {
-            token: token
-        },
-        success: function (data) {
-            if (data >= 0) {
-                console.log(data);
-               setTimeout(function () {
-                   window.location.href = "../html/rules.html";
-               },1000)
+            if(data){
+                $.cookie("token",data,{ expires: 1,path: '/'});
+                YDUI.dialog.loading.open('登陆中');
+                if($.cookie("customerId")){
+                    setTimeout(function () {
+                        YDUI.dialog.loading.close();/* 移除loading */
+                        window.location.href = "index.html";
+                    }, 2000);
+                }else{
+                    setTimeout(function () {
+                        YDUI.dialog.loading.close();/* 移除loading */
+                        window.location.href = "rules.html";
+                    }, 2000);
+                }
+            }else{
+                YDUI.dialog.toast('登陆失败，验证码错误', 'none', 1000);
             }
         }
     })

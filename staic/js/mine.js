@@ -1,4 +1,4 @@
-var projectId = 1;
+var projectId = $.cookie("projectId");
 var customerId;
 var startIndex = -1;
 var pageCount = -1;
@@ -9,6 +9,7 @@ $(function () {
     // 退出登陆
     $(".logout").on('touchstart', function () {
         $.removeCookie('token', {path: '/'});
+
         window.location.href = "./login.html";
     })
 
@@ -18,7 +19,7 @@ $(function () {
 function CheckToken() {
     var token = $.cookie('token');
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/CheckToken",
+        url: url+"CheckToken",
         type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -30,7 +31,7 @@ function CheckToken() {
                 customerId = data;
                 Customer_query();
             } else {
-                window.location.href = "./login.html";
+                window.location.href = "login.html";
             }
         }
     })
@@ -39,7 +40,7 @@ function CheckToken() {
 function Customer_query() {
     console.log(customerId);
     $.ajax({
-        url: "http://123.206.206.90:2511/AjaxService.svc/Customer_query",
+        url: url+"Customer_query",
         type: "get",
         dataType: 'jsonp',
         jsonp: "callback",
@@ -51,6 +52,7 @@ function Customer_query() {
         },
         success: function (data) {
             var me = JSON.parse(data.replace(/\[|]/g, ''));
+            console.log(data);
             $(".user-name").html(me.customerName);
             $(".telephone").html(me.phone);
             //身份证信息打码
