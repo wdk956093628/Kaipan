@@ -15,12 +15,12 @@
     <link rel="stylesheet" href="../staic/css/home.css">
     <link rel="stylesheet" href="../staic/css/house.css">
     <link rel="stylesheet" href="../staic/css/orderDetails.css">
+    <link href="https://cdn.bootcss.com/Swiper/4.2.0/css/swiper.min.css" rel="stylesheet">
 </head>
 <body>
 <section class="g-flexview">
     <!--头部-->
     <header class="m-navbar nomargin">
-        <!--javascript:history.go(-1)-->
         <a href="./order.html" class="navbar-item">
             <i class="back-ico"></i>
         </a>
@@ -33,7 +33,9 @@
     <div class="g-scrollview">
         <!-- banner图 -->
         <div class="home-banner">
-            <img src="../staic/images/index_banner.jpg" alt="">
+            <div class="od-container swiper-container">
+                <div class="od-content swiper-wrapper"></div>
+            </div>
         </div>
         <!--房源状态-->
         <div class="banner pt15">
@@ -98,19 +100,26 @@
 <script type="text/javascript" src="../staic/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../staic/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="../staic/ydui/js/ydui.js"></script>
+<script src="https://cdn.bootcss.com/Swiper/4.2.0/js/swiper.min.js"></script>
 <script type="text/javascript" src="../staic/js/public.js"></script>
 <script type="text/javascript" src="../staic/js/order.js"></script>
 <script>
     $(function () {
         //禁止遮罩层滑动
-        $(function () {
-            $(".mask").on('touchmove', function (e) {
-                e.preventDefault();  //阻止默认行为
-            })
-        })
+        $(".mask").on('touchmove', function (e) {
+            e.preventDefault();  //阻止默认行为
+        });
 
         //订单房源详情
         orderDetails();
+
+        // swiper配置
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay:true,
+            loop : true,
+            observer:true,//修改swiper自己或子元素时，自动初始化swiper
+            observeParents:true//修改swiper的父元素时，自动初始化swiper
+        });
     })
 </script>
 </body>

@@ -52,7 +52,6 @@ function Customer_query() {
         },
         success: function (data) {
             var me = JSON.parse(data.replace(/\[|]/g, ''));
-            console.log(data);
             $(".user-name").html(me.customerName);
             $(".telephone").html(me.phone);
             //身份证信息打码

@@ -23,10 +23,7 @@
     </header>
     <!--内容-->
     <div class="g-scrollview shopCart-container">
-        <div class="cartTip">
-            <p class="shopTip">您当前最多支持提交<b class="cartCount"></b>套房源订单</p>
-            <p class="editTip hide">您可以长按房源拖动进行排序</p>
-        </div>
+        <div class="cartTip"></div>
     </div>
 
     <!--编辑栏-->
@@ -41,8 +38,30 @@
 
     <!--弹出框-->
     <div class="mask">
-        <!--删除弹出框-->
-        <div class="del-dialog">
+        <!--提交购物车弹出框-->
+        <div class="dealAgreement">
+            <div class="agreement-content">
+                <p class="dealHouseName"></p>
+                <p class="dealHousePrice"><span class="price-icon">￥</span><span class="dealHouse-price"></span>万</p>
+                <div class="dealHouseInfo">
+                    <span class="typeNum"></span>
+                    <span class="houseType"></span>
+                    <span class="houseArea"></span>
+                    <span class="unitPrice"></span>
+                </div>
+                <p class="houseAgreement">
+                    <input type="checkbox" id="agreement" class="agreement" name="agreement">
+                    <label class="isAgree" for="agreement">我已阅读选房须知</label>
+                </p>
+                <div class="houseAgreement-btns">
+                    <button class="cancel deal-cancel">取消</button>
+                    <button class="but confirm-agreement">确定</button>
+                </div>
+            </div>
+            <div class="close dealAgreement-close"></div>
+        </div>
+        <!--删除购物车弹出框-->
+        <div class="del-dialog hide">
             <span class="del-shopName"></span>
             <div class="del-content">
                 <div class="del-confirm">

@@ -42,7 +42,7 @@
             <!-- 显示楼盘名称，状态 -->
             <div class="house-indication">
                 <span class="houseName"></span>
-                <div class="sold"><i></i>( <span class="addCartCount"></span> )</div>
+                <div class="sold"><i></i><span class="addCartCount"></span></div>
                 <div class="type-tag">
                     <span class="house-modelName tag"></span>
                     <span class="house-modelType tag"></span>
@@ -50,8 +50,8 @@
             </div>
             <!--楼盘信息-->
             <ul class="houseInfo bdr1">
-                <li><span class="houseTotal"></span> 总价</li>
-                <li><span class="builtArea"></span> 建筑面积</li>
+                <li><span class="houseTotal"></span>总价</li>
+                <li><span class="builtArea"></span>建筑面积</li>
                 <li><span class="builtUnitPrice"></span>建筑单价</li>
                 <li><span class="orientation"></span>朝向</li>
                 <li><span class="floorIndex"></span>楼层</li>
@@ -98,7 +98,8 @@
     <!-- 底部导航 -->
     <footer class="bottom">
         <button type="button" class="but addCart">加入购物车</button>
-        <button type="button" class="buyHouse">立即抢房（当前排在 <span>123</span> 位）</button>
+        <button type="button" class="buyHouse">开始抢房<span class="buy-order">（未开放）</span></button>
+        <button type="button" class="but buyHouse-active hide">开始抢房<span class="buy-order">(您当前排在<b class="orderNum"></b>位)</span></button>
     </footer>
 </section>
 <!--底部js-->
@@ -108,7 +109,6 @@
 <script src="https://cdn.bootcss.com/Swiper/4.2.0/js/swiper.min.js"></script>
 <script type="text/javascript" src="../staic/js/public.js"></script>
 <script type="text/javascript" src="../staic/js/house.js"></script>
-<!--<script type="text/javascript" src="../staic/js/home.js"></script>-->
 </body>
 <script>
     $(function () {

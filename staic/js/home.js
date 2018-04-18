@@ -7,22 +7,14 @@ var lineIndex;
 $(function () {
     CheckToken();
 
+    //点击到项目详情
     $("#toLoupanDetail").click(function () {
         window.location.href = "rockNum.html";
     });
 
-    //关闭弹出框
-    $(".close").click(function () {
-        $(".mask").hide();
-        $(".rockNumTip").hide();
-    });
-    $(".know").click(function () {
-        $(".mask").hide();
-        $(".rockNumTip").hide();
-    });
 });
 
-//获取customerId
+//获取customerId，判断登陆
 function CheckToken() {
     token = $.cookie("token");
     $.ajax({
@@ -44,6 +36,7 @@ function CheckToken() {
     })
 }
 
+//获取projectId
 function Customer_query(customerId) {
     $.ajax({
         url: url + "Customer_query",
@@ -57,8 +50,7 @@ function Customer_query(customerId) {
             pageCount: -1
         },
         success: function (data) {
-            // lineIndex = JSON.parse(data)[0].lineIndex;
-            // $.cookie("lineIndex",lineIndex,{ expires: 1,path: '/'});
+            lineIndex = JSON.parse(data)[0].lineIndex;
             projectId = JSON.parse(data)[0].projectId;
             $.cookie("projectId", projectId, {expires: 1, path: '/'});
             Properties_query();
@@ -79,30 +71,29 @@ function Properties_query() {
             projectId: projectId
         },
         success: function (data) {
-            if (data === 0) {
-                $(".sequence").html("秒开");
+            data = JSON.parse(data)[0];
+            // 开盘时间
+            var skipMode = data.skipMode;
+            var timer = data.startTime.split(" ");
+            var year = timer[0].split("/");
+            var hour = timer[1].split(":");
+            $(".year").html(year[0]);
+            $(".month").html(year[1]);
+            $(".day").html(year[2]);
+            $(".hour").html(hour[0]);
+            $(".minute").html(hour[1]);
+            $(".second").html(hour[2]);
+            if (skipMode == 0) {
+                $(".skipMode").html("秒开");
             } else {
-                showSort();
+                $(".lineIndex").html(lineIndex)
             }
         }
     })
 }
 
-//进入首页，自动摇号
-function showSort() {
-    if ($.cookie("sortCode")) {
-        $(".lineIndex").html($.cookie("sortCode"));
-        if ($(".lineIndex").html() == "") {
-            $(".mask").show();
-            $(".rockNumTip").show();
-            $(".rockNum-result").html($.cookie("sortCode"))
-        }
-    }
-}
-
-//首页楼盘信息展示
+//楼盘信息展示
 function ProjectInfo_query() {
-    projectId = $.cookie("projectId");
     $.ajax({
         url: url + "ProjectInfo_query",
         type: "get",
@@ -116,19 +107,9 @@ function ProjectInfo_query() {
             //项目图片
             getProjectPhotos(data.pictures);
             //项目信息
-            var timer = data.openTime.split(" ");
-            var year = timer[0].split("/");
-            var hour = timer[1].split(":");
             $(".rockNum-title").html(data.projectName);
             $(".loupanName").html(data.projectName);
             $(".loupan-adress").html(data.projectAddress);
-            // 开盘时间
-            $(".year").html(year[0]);
-            $(".month").html(year[1]);
-            $(".day").html(year[2]);
-            $(".hour").html(hour[0]);
-            $(".minute").html(hour[1]);
-            $(".second").html(hour[2]);
             // 开盘规则
             $(".kaipan-rules").html(data.openRule);
             // 楼盘信息
@@ -161,6 +142,8 @@ function Model_query() {
         success: function (data) {
             data = JSON.parse(data);
             var list = "";
+            var tag = "";
+            //户型信息
             $.each(data, function (i, o) {
                 //户型图片
                 getModelphoto(o.pictures);
@@ -171,15 +154,21 @@ function Model_query() {
                 list += '<img class="ht-img" src="" alt="户型图">';
                 list += '</div>';
                 list += '<p class="huxing-info"><span class="houseType">' + o.modelType + '</span>';
-                list += '<p><span class="houseAmount">' + o.count + '套</span></p>';
+                list += '<p><span class="houseAmount">共' + o.count + '套</span></p>';
                 list += '</div>';
             });
             $(".ht-content").html(list);
+
+            // 楼盘户型标签
+            $.each(data.splice(0, 3), function (i, o) {
+                tag += '<span class="tag">' + o.modelType + '</span>';
+            });
+            $(".type-tag").html(tag);
         }
     });
 }
 
-// 项目图片
+// 楼盘图片
 function getProjectPhotos(photoId) {
     $.ajax({
         url: photoUrl + 'getPhotos',
@@ -192,8 +181,12 @@ function getProjectPhotos(photoId) {
             userKey: 1
         },
         success: function (data) {
-            var projectUrl = data.data.data[0].photoUrl;
-            $(".projectImg").attr("src", projectUrl);
+            if (data.data.data == "") {
+                $(".projectImg").attr("src", '../staic/images/noPic.png');
+            } else {
+                var projectUrl = data.data.data[0].photoUrl;
+                $(".projectImg").attr("src", projectUrl);
+            }
         }
     })
 }
@@ -211,8 +204,12 @@ function getModelphoto(photoId) {
             userKey: 1
         },
         success: function (data) {
-            var mnodelUrl = data.data.data[0].photoUrl;
-            $(".ht-img").attr("src", mnodelUrl);
+            if (data.data.data == "") {
+                $(".ht-img").attr("src", '../staic/images/noPic.png');
+            } else {
+                var mnodelUrl = data.data.data[0].photoUrl;
+                $(".ht-img").attr("src", mnodelUrl);
+            }
         }
     })
 }

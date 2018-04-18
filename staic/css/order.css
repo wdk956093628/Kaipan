@@ -16,13 +16,12 @@
     color: #f24a61;
 }
 
-
 /*购物车复选框*/
-input[type=checkbox] {
+input[name=cartItem]{
     display: none;
 }
 
-input[type=checkbox] + label {
+input[name=cartItem] + label{
     position: relative;
     top: 24px;
     left: -30px;
@@ -34,7 +33,7 @@ input[type=checkbox] + label {
     border: 1px solid #ccc;
 }
 
-input[type=checkbox]:checked + label:after {
+input[name=cartItem]:checked + label:after {
     content: ''; /*勾选符号*/
     position: absolute;
     display: block;
@@ -44,6 +43,36 @@ input[type=checkbox]:checked + label:after {
     height: 9px;
     background: url("../images/checked.png") center;
     background-size: cover;
+}
+
+.isAgree{
+    position: relative;
+    color: #666;
+}
+input[name=agreement] {
+    display: none;
+}
+
+input[name=agreement] + label:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -20px;
+    background-color: #fafafa;
+    border: 1px solid #cacece;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+    padding: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+input[name=agreement]:checked + label:after {
+    content: '\2714';
+    font-size: 14px;
+    position: absolute;
+    top: -4px;
+    left: -17px;
+    color: #99a1a7;
 }
 
 
@@ -71,16 +100,23 @@ input[type=checkbox]:checked + label:after {
     border-radius: 2px;
 }
 
-/*待售*/
+
+/*可售*/
 .sellIn {
     color: #ff8416;
-    background-color: rgba(255, 132, 22, 0.1);
+    background-color: rgba(255, 132, 22, .2);
+}
+
+.sellwait{
+    color: #fff;
+    background-color: #70c972;
+    opacity: .75;
 }
 
 /*已售*/
 .sellOut {
     color: #d2d2d2;
-    background-color: rgba(240, 244, 245, 0.95);
+    background-color: rgba(240, 244, 245, .95);
 }
 
 /*订单楼盘状态*/
@@ -155,6 +191,8 @@ input[type=checkbox]:checked + label:after {
 }
 
 /*购物车弹框*/
+/*删除*/
+.dealAgreement,
 .del-dialog {
     margin: auto;
     padding: 0.75rem 0.6rem;
@@ -188,7 +226,6 @@ input[type=checkbox]:checked + label:after {
 .del-shopName {
     margin: auto;
     display: block;
-    width: 2.9rem;
     font-size: 0.3rem;
     color: #ffffff;
 }
@@ -200,6 +237,61 @@ input[type=checkbox]:checked + label:after {
     color: #333333;
 }
 
+/*成交协议*/
+.dealAgreement{
+    padding: 0.75rem 0;
+    width: 5.15rem;
+    height: 6.7rem;
+    background-image: url("../images/deal-agreement.png");
+    background-size: cover;
+}
+
+.dealHouseName{
+    font-size: .32rem;
+    font-weight: bold;
+    color: #fff;
+}
+.dealHousePrice{
+    margin-top: 2.5rem;
+    height: .7rem;
+    font-size: .26rem;
+    font-weight: bold;
+    color: #333;
+}
+.dealHouseInfo{
+    margin-bottom: .1rem;
+    height: .6rem;
+    font-size: .23rem;
+    color: #666;
+}
+
+.typeNum:after,
+.houseType:after,
+.houseArea:after{
+    content: " ";
+    display: inline-block;
+    width: 0;
+    height: 0.2rem;
+    border-left: 1px solid #d2d2d2;
+    margin: 0 5px;
+}
+
+.houseAgreement{
+    font-size: .23rem;
+    margin-bottom: .2rem;
+}
+
+.houseAgreement-btns{
+    width: 100%;
+    padding:0 .6rem;
+}
+
+.confirm-agreement{
+    float: right;
+    width: 1.6rem;
+    height: .7rem;
+    border-radius: 16px;
+}
 /*确认删除*/
 .cancel, .del-sure {
     margin-top: 0.6rem;
@@ -214,7 +306,7 @@ input[type=checkbox]:checked + label:after {
 /*取消删除*/
 .cancel {
     float: left;
-    margin-left: 0.7rem;
+    margin-left: .7rem;
     border: solid 1px #cccccc;
 }
 
@@ -222,6 +314,18 @@ input[type=checkbox]:checked + label:after {
 
 .del-close {
     top: -35px;
+}
+
+.dealAgreement-close{
+    top: -.8rem;
+}
+
+.deal-cancel{
+    margin: 0;
+    width: 1.6rem;
+    height: .7rem;
+    border-radius: 16px;
+    border: solid 1px #bbbbbb;
 }
 
 /*拖动排序*/

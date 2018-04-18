@@ -1,8 +1,8 @@
-var phone = "";
-var idCard = "";
-var shortCode = "";
+var phone;
+var idCard;
+var shortCode;
+
 var $getCode = $('#J_GetCode');
-var token = "";
 
 $(document).ready(function () {
     //输入密码出现提示图标
@@ -70,16 +70,17 @@ $(document).ready(function () {
         resetStr: '重新获取验证码'
     });
 
+    //发送验证码
+    /*判断重复提交*/
     var click1 = 0;
     $getCode.on('touchstart', function () {
         phone = $("#telephone").val();
         idCard = $("#id_card").val();
-        verifyCode = $("#verify").val();
         if (click1 == 0) {
             if (phone != "" && idCard != "") {
                 storeShortCode();
             } else {
-                $(".psdTip").html("请输入手机号码以及身份证号码");
+                YDUI.dialog.toast('请输入完整信息', 'none', 1000);
             }
             click1 = 1;
             setTimeout(function () { click1 = 0 }, 2000);
@@ -88,7 +89,14 @@ $(document).ready(function () {
 
     // 登录
     $(".login_but").on('touchstart', function () {
+        phone = $("#telephone").val();
+        idCard = $("#id_card").val();
+        shortCode = $("#verify").val();
+        if(phone != "" && idCard != "" && shortCode != ""){
             CheckShortCode();
+        }else{
+            YDUI.dialog.toast('请输入完整信息', 'none', 1000);
+        }
     });
 
 
@@ -127,7 +135,6 @@ function CheckShortCode() {
     idCard = $("#id_card").val();
     shortCode = $("#verify").val();
 
-    /*判断重复提交*/
     $.ajax({
         url: url+"CheckShortCode",
         type: "post",
@@ -146,15 +153,15 @@ function CheckShortCode() {
                     setTimeout(function () {
                         YDUI.dialog.loading.close();/* 移除loading */
                         window.location.href = "index.html";
-                    }, 2000);
+                    }, 1000);
                 }else{
                     setTimeout(function () {
                         YDUI.dialog.loading.close();/* 移除loading */
                         window.location.href = "rules.html";
-                    }, 2000);
+                    }, 1000);
                 }
             }else{
-                YDUI.dialog.toast('登陆失败，验证码错误', 'none', 1000);
+                YDUI.dialog.toast('登陆失败', 'none', 1000);
             }
         }
     })

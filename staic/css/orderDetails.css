@@ -3,6 +3,10 @@
 /*订单详情*/
 
 /*订单信息*/
+.od-container{
+    width: 100%;
+    height: 100%;
+}
 
 /*认购成功图标*/
 .deal-status {
