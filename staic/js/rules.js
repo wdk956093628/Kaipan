@@ -1,10 +1,10 @@
 var projectId;
 var customerId;
+var sortIndex;
 var token = "";
-var sortCode;
 
 $(function () {
-    countDown();
+
     CheckToken();
 
     //关闭弹出框
@@ -14,8 +14,7 @@ $(function () {
     });
 
     $(".toIndex").on('touchstart',function () {
-        $(".mask").hide();
-        window.location.href = 'index.html'
+        window.location.href = 'index.html';
     });
 
 
@@ -57,8 +56,17 @@ function Customer_query(customerId) {
             pageCount: -1
         },
         success: function (data) {
+            console.log(data)
+            console.log("111")
             projectId = JSON.parse(data)[0].projectId;
-            ProjectInfo_query();
+            sortIndex = JSON.parse(data)[0].sortIndex;
+            if(sortIndex == -1){
+                console.log(sortIndex)
+                countDown();
+                ProjectInfo_query();
+            }else{
+                window.location.href = 'index.html';
+            }
         }
     })
 }
@@ -111,14 +119,9 @@ function Properties_query() {
             projectId: projectId
         },
         success: function (data) {
-            var skipMode = JSON.parse(data)[0].skipMode;  //开盘方式; 0代表秒开; 不等于0代表分批;
-            var queueMode = JSON.parse(data)[0].lineIndex; //是否摇号; 0代表摇号  1代表不摇号;
-            if (skipMode == 0) {
-                $(".rockNum").html("开始抢房");
-                $(".rockNum").on("click",function(){
-                    window.location.href = "index.html"
-                })
-            }else{
+            var skipMode = JSON.parse(data)[0].skipMode;  //开盘方式; 0代表秒开; 1代表分批;
+            var queueMode = JSON.parse(data)[0].queueMode; //是否摇号; 0代表摇号  1代表不摇号;
+            if (skipMode == 1) {
                 if(queueMode == 0){
                     $(".rockNum").on("click",function(){
                         YDUI.dialog.loading.open('摇号中');
@@ -133,6 +136,11 @@ function Properties_query() {
                         window.location.href = "index.html"
                     })
                 }
+            }else{
+                $(".rockNum").html("开始抢房");
+                $(".rockNum").on("click",function(){
+                    window.location.href = "index.html"
+                })
             }
         }
     })
@@ -140,6 +148,8 @@ function Properties_query() {
 
 // 摇号
 function autoSort() {
+    console.log(projectId)
+    console.log(customerId)
     $.ajax({
         url: url+"AutoSort",
         type: "get",
@@ -152,6 +162,7 @@ function autoSort() {
         success: function (data) {
             if (data > 0) {
                $(".mask").show();
+               $(".rockNumTip").show();
                $(".rockNum-result").html(data);
             }else{
                 YDUI.dialog.toast('摇号失败', 'error', 1000);

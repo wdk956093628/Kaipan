@@ -1,7 +1,7 @@
 var projectId;
 var customerId;
 var token = "";
-var lineIndex;
+var sortIndex;
 
 
 $(function () {
@@ -50,7 +50,7 @@ function Customer_query(customerId) {
             pageCount: -1
         },
         success: function (data) {
-            lineIndex = JSON.parse(data)[0].lineIndex;
+            sortIndex = JSON.parse(data)[0].sortIndex;
             projectId = JSON.parse(data)[0].projectId;
             $.cookie("projectId", projectId, {expires: 1, path: '/'});
             Properties_query();
@@ -86,7 +86,7 @@ function Properties_query() {
             if (skipMode == 0) {
                 $(".skipMode").html("秒开");
             } else {
-                $(".lineIndex").html(lineIndex)
+                $(".lineIndex").html(sortIndex);
             }
         }
     })
@@ -94,6 +94,8 @@ function Properties_query() {
 
 //楼盘信息展示
 function ProjectInfo_query() {
+    var p = localStorage.getItem('key');
+    console.log(p)
     $.ajax({
         url: url + "ProjectInfo_query",
         type: "get",

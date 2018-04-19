@@ -314,6 +314,10 @@ function Product_queryCartCount() {
 
 //提交订单
 function Deal() {
+    console.log(projectId)
+    console.log(customerId)
+    console.log(productIds)
+    console.log(userId)
     $.ajax({
         url: url+"Deal",
         type: "get",
@@ -329,7 +333,7 @@ function Deal() {
             if (data > 0) {
                 YDUI.dialog.toast('提交成功', 'success', 1000);
                 setTimeout(function () {
-                    window.location.reload();
+                    // window.location.reload();
                 }, 1000)
             } else if (data == 0) {
                 YDUI.dialog.toast('认购数量达到上限', 'error', 1000);

@@ -29,6 +29,8 @@ $(document).ready(function () {
     //     }
     // });
 
+    CheckToken();
+
     // 验证手机号码
     $("#telephone").blur(function () {
         var tel = $(this).val();
@@ -58,7 +60,6 @@ $(document).ready(function () {
     }).focus(function () {
         $(".psdTip").html("");
     });
-
 
     /*获取短信验证码倒计时*/
     /* 定义参数 */
@@ -98,9 +99,25 @@ $(document).ready(function () {
             YDUI.dialog.toast('请输入完整信息', 'none', 1000);
         }
     });
-
-
 });
+
+function CheckToken() {
+    token = $.cookie('token');
+    $.ajax({
+        url: url + "CheckToken",
+        type: "post",
+        dataType: 'jsonp',
+        jsonp: "callback",
+        data: {
+            token: token
+        },
+        success: function (data) {
+            if (data > 0) {
+                window.location.href = 'index.html';
+            }
+        }
+    })
+}
 
 //发送验证码
 function storeShortCode() {
@@ -147,6 +164,7 @@ function CheckShortCode() {
         },
         success: function (data) {
             if(data){
+                localStorage.setItem('key', data);
                 $.cookie("token",data,{ expires: 1,path: '/'});
                 YDUI.dialog.loading.open('登陆中');
                 if($.cookie("customerId")){
@@ -161,7 +179,7 @@ function CheckShortCode() {
                     }, 1000);
                 }
             }else{
-                YDUI.dialog.toast('登陆失败', 'none', 1000);
+                YDUI.dialog.toast('验证码错误', 'none', 1000);
             }
         }
     })

@@ -66,39 +66,85 @@
         <!--刷新按钮-->
         <div class="refresh"><img src="../staic/images/refresh.png" alt="refresh"></div>
 
-        <!--弹出框 去购物车-->
-        <div class="houseDetail-dialog houseToCart hide">
-            <div class="house-content">
+        <div class="mask">
+            <!--底部弹出框-->
+            <div class="house-dialog hide">
+                <!-- 显示楼盘名称，状态 -->
+                <div class="dialog-top">
+                    <span class="houseName"></span>
+                    <span class="check-details">查看详情</span>
+                </div>
+                <div class="dialog-middle">
+                    <span class="typeNum"></span>
+                    <span class="houseType"></span>
+                    <span class="houseArea"></span>
+                    <span class="unitPrice"></span>
+                </div>
+                <p class="price"><span class="price-icon">￥</span><span class="house-price"></span>万</p>
+                <div class="dialog-bottom">
+                    <button type="button" class="but addCart">加入购物车</button>
+                    <button type="button" class="buyHouse">立即购买<span class="buy-order">（未开放）</span></button>
+                    <button type="button" class="but buyHouse-active hide">开始抢房<span class="buy-order">(您当前排在<b class="orderNum"></b>位)</span></button>
+                </div>
+                <div class="close house-close"></div>
+            </div>
+
+            <!--弹出框 去购物车-->
+            <div class="houseDetail-dialog houseToCart hide">
+                <div class="house-content">
                 <span class="house-tip">
                     加入购物车成功
                 </span>
-                <button class="cancel house-cancel">好的</button>
-                <a href="./shopCart.html">
-                    <button class="but toShopCart">去购物车</button>
-                </a>
+                    <button class="cancel house-cancel">好的</button>
+                    <a href="./shopCart.html">
+                        <button class="but toShopCart">去购物车</button>
+                    </a>
+                </div>
+                <div class="close houseDetail-close"></div>
             </div>
-            <div class="close houseDetail-close"></div>
-        </div>
 
-        <!--弹出框去订单-->
-        <div class="houseDetail-dialog houseToOrder hide">
-            <div class="house-content">
+            <!--立即购买弹出框-->
+            <div class="dealAgreement hide">
+                <div class="agreement-content">
+                    <p class="dealHouseName"></p>
+                    <p class="dealHousePrice"><span class="price-icon">￥</span><span class="dealHouse-price"></span>万</p>
+                    <div class="dealHouseInfo">
+                        <span class="typeNum"></span>
+                        <span class="houseType"></span>
+                        <span class="houseArea"></span>
+                        <span class="unitPrice"></span>
+                    </div>
+                    <p class="houseAgreement">
+                        <input type="checkbox" id="agreement" class="agreement" name="agreement">
+                        <label class="isAgree" for="agreement">我已阅读选房须知</label>
+                    </p>
+                    <div class="houseAgreement-btns">
+                        <button class="cancel deal-cancel">取消</button>
+                        <button class="but confirm-agreement">确定</button>
+                    </div>
+                </div>
+                <div class="close dealAgreement-close"></div>
+            </div>
+
+            <!--弹出框去订单-->
+            <div class="houseDetail-dialog houseToOrder hide">
+                <div class="house-content">
                 <span class="house-tip">
                     购买成功
                 </span>
-                <button class="cancel house-cancel">好的</button>
-                <a href="./order.html">
-                    <button class="but toShopCart">查看订单</button>
-                </a>
+                    <button class="cancel house-cancel">好的</button>
+                    <a href="./order.html">
+                        <button class="but toShopCart">查看订单</button>
+                    </a>
+                </div>
+                <div class="close houseDetail-close"></div>
             </div>
-            <div class="close houseDetail-close"></div>
         </div>
-        <div class="mask"></div>
     </div>
     <!-- 底部导航 -->
     <footer class="bottom">
         <button type="button" class="but addCart">加入购物车</button>
-        <button type="button" class="buyHouse">开始抢房<span class="buy-order">（未开放）</span></button>
+        <button type="button" class="buyHouse hide">立即购买<span class="buy-order">（未开放）</span></button>
         <button type="button" class="but buyHouse-active hide">开始抢房<span class="buy-order">(您当前排在<b class="orderNum"></b>位)</span></button>
     </footer>
 </section>
